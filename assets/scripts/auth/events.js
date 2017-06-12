@@ -1,7 +1,7 @@
 'use strict'
 // const mapPage = require('../templates/map.handlebars')
 const getFormFields = require(`../../../lib/get-form-fields`)
-// const mapEvents = require('../usmap/events.js')
+const gamePlayEvents = require('../game-play/events.js')
 const api = require('./api')
 const ui = require('./ui')
 const mainPageNav = require('../templates/main-page-nav.handlebars')
@@ -55,6 +55,7 @@ const addLandingHandlers = () => {
       $('#sign-out').on('submit', onSignOut)
       $('#change-password').on('submit', onChangePassword)
       $('#game-state-container').html(gameOptions)
+      gamePlayEvents.addGameHandlers()
     }
   })
 }
