@@ -13,8 +13,8 @@ $(() => {
 
 // use require without a reference to ensure a file is bundled
 require('./example')
-// require('./jquery.vmap.js')
-// require('./jquery.vmap.usa.js')
+require('./jquery.vmap.js')
+require('./jquery.vmap.usa.js')
 const authEvents = require('./auth/events.js')
 
 $(() => {

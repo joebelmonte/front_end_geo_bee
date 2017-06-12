@@ -3,7 +3,8 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import url('https://fonts.googleapis.com/css?family=Barrio|Londrina+Solid|Flamenco|Montserrat:700|Poiret+One|Raleway:400,500,700|Roboto:400,500');
 // @import 'reset';
 // // @import 'typography';
-// // @import 'map';
+@import 'jqvmap';
+@import 'map';
 
 //////////////////////////////
 // Global

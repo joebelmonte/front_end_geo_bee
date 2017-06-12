@@ -1,0 +1,62 @@
+.map-view-container .goals {
+  // border: 2px solid red;
+}
+
+.us-map {
+  margin: 30px 0 60px 0;
+  // border: 2px solid red;
+  position: relative;
+}
+
+.map-tooltip {
+  position: absolute;
+  right: 25%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vmap {
+  max-width: 800px;
+  height: 600px;
+  margin: auto;
+}
+
+.my-goals-header {
+  text-align: center;
+}
+
+// .goal-response-container {
+//   // border: 2px solid green;
+//   max-width: 430px;
+//   height: 260px;
+//   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
+//   margin: 0 auto 50px auto;
+//   background: url(../images/goal_bg.jpg) repeat;
+// 	// background-size: cover;
+// }
+
+.goal-box {
+  text-align: center;
+  // border: 2px solid blue;
+  margin: 0px auto;
+  padding: 100px 0px;
+  // margin-bottom: 50px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,.25);
+  height: 100%;
+}
+
+.goal-box h3 {
+  color: #fff;
+  font-size: 3em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.my-goals-row {
+  // border: 2px solid yellow;
+  margin: auto;
+}
+
+goal-column {
+  // border: 2px solid pink;
+}
