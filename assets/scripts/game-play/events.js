@@ -6,12 +6,16 @@ const api = require('./api')
 const ui = require('./ui')
 const store = require('../store.js')
 const usStatesArray = require('../us-states-array.js')
+const usAbbrevKey = require('../us-abbrev-key.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 
-const onGuess = function (event) {
+const onGuess = function (element, code, region) {
   event.preventDefault()
   console.log('in Guess')
+  console.log('element is ', element)
+  console.log('code is ', code)
+  console.log('region is ', region)
 }
 
 const usMap = function () {
@@ -57,7 +61,8 @@ const onStartNewGame = function (event) {
   $('#game-state-container').html(gamePlay)
   usMap()
   const initialPrompt = currentGame.map[Math.floor(Math.random() * currentGame.map.length)]
-  console.log(initialPrompt)
+  const initialState = usAbbrevKey[initialPrompt]
+  $('#next-guess-prompt').text(initialState)
 }
 
 const addGameHandlers = () => {
