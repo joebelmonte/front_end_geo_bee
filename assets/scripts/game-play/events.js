@@ -22,7 +22,7 @@ const usMap = function () {
     borderWidth: 1,
     color: '#f4f3f0',
     enableZoom: false,
-    hoverColor: '#c9dfaf',
+    hoverColor: '#0033cc',
     hoverOpacity: null,
     normalizeFunction: 'linear',
     scaleColors: ['#b6d6ff', '#005ace'],
@@ -43,6 +43,12 @@ const usMap = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
+  const mapChoice = $('#map-choice').val()
+  const difficultyLevel = $('#difficulty-level').val()
+  const processOfElmination = $('#process-of-elimination').val()
+  console.log('mapChoice is ', mapChoice)
+  console.log('difficulty level is ', difficultyLevel)
+  console.log('processOfElmination is ', processOfElmination)
   $('#game-state-container').html(gamePlay)
   usMap()
 }
