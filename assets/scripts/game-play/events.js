@@ -5,11 +5,13 @@ const getFormFields = require(`../../../lib/get-form-fields`)
 const api = require('./api')
 const ui = require('./ui')
 const store = require('../store.js')
+const usStatesArray = require('../us-states-array.js')
+let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 
-const onGetItems = function (event) {
+const onGuess = function (event) {
   event.preventDefault()
-  console.log('in onGetItems')
+  console.log('in Guess')
 }
 
 const usMap = function () {
@@ -36,21 +38,26 @@ const usMap = function () {
       console.log('element is ', element)
       console.log('code is ', code)
       console.log('region is ', region)
-      onGetItems(element, code, region)
+      onGuess(element, code, region)
     }
   })
 }
 
 const onStartNewGame = function (event) {
   event.preventDefault()
-  const mapChoice = $('#map-choice').val()
-  const difficultyLevel = $('#difficulty-level').val()
-  const processOfElmination = $('#process-of-elimination').val()
-  console.log('mapChoice is ', mapChoice)
-  console.log('difficulty level is ', difficultyLevel)
-  console.log('processOfElmination is ', processOfElmination)
+  currentGame = {}
+  if ($('#map-choice').val() === 'USA') {
+    currentGame.map = usStatesArray
+  }
+  currentGame.difficultyLevel = $('#difficulty-level').val()
+  currentGame.processOfElmination = $('#process-of-elimination').val()
+  console.log('mapChoice is ', currentGame.map)
+  console.log('difficulty level is ', currentGame.difficultyLevel)
+  console.log('processOfElmination is ', currentGame.processOfElmination)
   $('#game-state-container').html(gamePlay)
   usMap()
+  const initialPrompt = currentGame.map[Math.floor(Math.random() * currentGame.map.length)]
+  console.log(initialPrompt)
 }
 
 const addGameHandlers = () => {
