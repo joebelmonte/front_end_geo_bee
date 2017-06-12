@@ -1,2 +1,38 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import url('https://fonts.googleapis.com/css?family=Barrio|Londrina+Solid|Flamenco|Montserrat:700|Poiret+One|Raleway:400,500,700|Roboto:400,500');
+// @import 'reset';
+// // @import 'typography';
+// // @import 'map';
+
+//////////////////////////////
+// Global
+//////////////////////////////
+
+// * {
+//   // border: 1px solid green;
+// }
+
+body {
+  padding: 40px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.center {
+  margin: auto;
+}
+
+footer {
+  margin-top: 100px;
+}
+
+.inline {
+  display: inline;
+}
+
+.status-message {
+  text-align: center;
+}
