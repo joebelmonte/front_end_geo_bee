@@ -1,0 +1,94 @@
+<header id="header" class="header">
+  <div class="module parallax parallax-1">
+    <div class="parallax-container">
+      <div class="row">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2">
+
+          <div class="auth-modals">
+
+            <!-- Trigger the modal with a button -->
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="modal-btn modal-signin-button align-right" data-toggle="modal" data-target="#modal-signin">Sign in</button>
+            <!-- Modal -->
+            <div id="modal-signin" class="modal fade modal-signin" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <!-- Modal header-->
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign in</h4>
+                  </div>
+                  <!-- Modal body-->
+                  <div class="modal-body">
+                    <form id="sign-in" class="text-align-center">
+                      <fieldset>
+                        <input type="text" name="credentials[email]" placeholder="email" required>
+                        <!-- [email] is the key of credentials object. name matters. Our object is made to look like what we see in sign-uo.sh  -->
+                        <input type="password" name="credentials[password]" placeholder="password" required>
+                        <input type="submit" name="submit" value="Submit">
+                      </fieldset>
+                    </form>
+                  </div>
+                  <!-- Modal footer-->
+                  <div class="modal-footer">
+                    <p id="signin-status-message" class="signin-status-message text-align-center"></p>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end of sign in column -->
+        </div>
+        <!-- end of header row -->
+      </div>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+          <div class="hero">
+            <h1 id="hero-header" class="hero-header text-align-center">Geography Bee</h1>
+            <h3 id="header-status-message" class="header-status-message text-align-center">Some Text Here</h3>
+
+          </div>
+          <!-- take this out? -->
+          <div class="auth-modals text-align-center">
+            <button type="button" class="modal-signup-button modal-btn" data-toggle="modal" data-target="#modal-signup">Create an account</button>
+            <!-- Modal -->
+            <div id="modal-signup" class="modal fade modal-signup" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <!-- Modal header-->
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign up</h4>
+                  </div>
+                  <!-- Modal body-->
+                  <div class="modal-body">
+                    <form id="sign-up" class="text-align-center">
+                      <fieldset>
+                        <input type="text" name="credentials[email]" placeholder="email" required>
+                        <!-- name matters. Our object is made to look like what we see in sign-uo.sh  -->
+                        <input type="password" name="credentials[password]" placeholder="password" required>
+                        <input type="password" name="credentials[password_confirmation]" placeholder="password_confirmation" required>
+                        <input type="submit" name="submit" value="Submit">
+                      </fieldset>
+                    </form>
+                  </div>
+                  <!-- Modal footer-->
+                  <div class="modal-footer">
+                    <p id="signup-status-message" class="signup-status-message text-align-center"></p>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+        <!-- closing tag for second row -->
+      </div>
+    </div>
+</header>
