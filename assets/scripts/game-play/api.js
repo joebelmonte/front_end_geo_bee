@@ -13,15 +13,15 @@ const postGame = (currentGame) => {
       Authorization: 'Token token=' + store.user.token
     },
     data: {
-    "game": {
-      "guesses_total": currentGame.numberCompleted + currentGame.incorrectGuesses,
-      "guesses_correct": currentGame.numberCompleted,
-      "guesses_incorrect": currentGame.incorrectGuesses,
-      "difficulty": currentGame.difficultyLevel,
-      "game_complete": currentGame.gameComplete,
-      "game_result": currentGame.result,
-      "geography": currentGame.mapChoice
-    }
+      'game': {
+        'guesses_total': currentGame.numberCompleted + currentGame.incorrectGuesses,
+        'guesses_correct': currentGame.numberCompleted,
+        'guesses_incorrect': currentGame.incorrectGuesses,
+        'difficulty': currentGame.difficultyLevel,
+        'game_complete': currentGame.gameComplete,
+        'game_result': currentGame.result,
+        'geography': currentGame.mapChoice
+      }
     }
   })
 }
