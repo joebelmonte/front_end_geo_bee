@@ -52,9 +52,10 @@ const onStartNewGame = function (event) {
   currentGame = {}
   if ($('#map-choice').val() === 'USA') {
     currentGame.map = usStates
-    currentGame.currentGuess = Object.keys(usStates)[Math.floor(Math.random() * Object.keys(usStates).length)]
-    console.log('currentGame.currentGuess is ', currentGame.currentGuess)
   }
+  currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
+  currentGame.numberOfItems = Object.keys(currentGame.map).length
+  console.log('currentGame.currentGuess is ', currentGame.currentGuess)
   currentGame.difficultyLevel = $('#difficulty-level').val()
   if (currentGame.difficultyLevel === 'hard') {
     currentGame.guessesRemaining = 3
@@ -73,6 +74,10 @@ const onStartNewGame = function (event) {
   $('#game-state-container').html(gamePlay)
   usMap()
   $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
+  $('#incorrect-guesses').text(0)
+  $('#remaining-guesses').text(currentGame.guessesRemaining)
+  $('#number-completed').text(0)
+  $('#number-remaining').text(currentGame.numberOfItems)
 }
 
 const addGameHandlers = () => {
