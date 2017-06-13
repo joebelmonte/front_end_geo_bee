@@ -44,10 +44,12 @@ const isGuessCorrect = function (code) {
 const checkGameOver = function () {
   if (currentGame.guessesRemaining === 0) {
     currentGame.result = 'lost'
+    currentGame.gameComplete = true
     return 'lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
     currentGame.result = 'won'
+    currentGame.gameComplete = true
     return 'won'
   } else {
     return false
@@ -63,11 +65,15 @@ const onGuess = function (element, code, region) {
   isGuessCorrect(code)
   if (checkGameOver() === 'won') {
     console.log('you won and currentGame.result is ', currentGame.result)
+    // api.postGame()
   }
   if (checkGameOver() === 'lost') {
     console.log('you lost and currentGame.result is ', currentGame.result)
+    console.log('prior to sending to the API the currentGame object is ', currentGame)
+    api.postGame(currentGame)
   }
   if (checkGameOver() === false && currentGame.currentGuessCorrect === true) {
+    console.log('Correct - time for another turn')
     nextTurn()
   }
   if (checkGameOver() === false && currentGame.currentGuessCorrect === false) {
