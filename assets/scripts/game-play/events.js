@@ -45,19 +45,19 @@ const isGuessCorrect = function (code) {
 
 const checkGameOver = function () {
   if (currentGame.guessesRemaining === 0 && currentGame.difficultyLevel !== 'sudden-death') {
-    currentGame.result = 'lost'
+    currentGame.result = 'Lost'
     currentGame.gameComplete = true
-    return 'lost'
+    return 'Lost'
   }
   if (currentGame.guessesRemaining === -1 && currentGame.difficultyLevel === 'sudden-death') {
-    currentGame.result = 'lost'
+    currentGame.result = 'Lost'
     currentGame.gameComplete = true
-    return 'lost'
+    return 'Lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
-    currentGame.result = 'won'
+    currentGame.result = 'Won'
     currentGame.gameComplete = true
-    return 'won'
+    return 'Won'
   } else {
     return false
   }
@@ -70,11 +70,11 @@ const onGuess = function (element, code, region) {
   console.log('code is ', code)
   console.log('region is ', region)
   isGuessCorrect(code)
-  if (checkGameOver() === 'won') {
+  if (checkGameOver() === 'Won') {
     console.log('you won and currentGame.result is ', currentGame.result)
-    api.postGame()
+    api.postGame(currentGame)
   }
-  if (checkGameOver() === 'lost') {
+  if (checkGameOver() === 'Lost') {
     console.log('you lost and currentGame.result is ', currentGame.result)
     console.log('prior to sending to the API the currentGame object is ', currentGame)
     api.postGame(currentGame)
@@ -147,6 +147,7 @@ const onStartNewGame = function (event) {
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
   currentGame = {}
+  currentGame.result = 'In Progress'
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
   currentGame.difficultyLevel = $('#difficulty-level').val()
@@ -206,13 +207,13 @@ const showGameOptionsPage = function () {
     })
     $('#games-completed').text(gamesComplete.length)
     const gamesWon = data.games.filter(function (game) {
-      if (game.game_result === 'won') {
+      if (game.game_result === 'Won') {
         return true
       }
     })
     $('#games-won').text(gamesWon.length)
     const gamesLost = data.games.filter(function (game) {
-      if (game.game_result === 'lost') {
+      if (game.game_result === 'Lost') {
         return true
       }
     })
