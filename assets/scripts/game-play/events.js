@@ -70,7 +70,7 @@ const onGuess = function (element, code, region) {
   isGuessCorrect(code)
   if (checkGameOver() === 'won') {
     console.log('you won and currentGame.result is ', currentGame.result)
-    // api.postGame()
+    api.postGame(currentGame)
   }
   if (checkGameOver() === 'lost') {
     console.log('you lost and currentGame.result is ', currentGame.result)
