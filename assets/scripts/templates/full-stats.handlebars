@@ -1,0 +1,26 @@
+<h1>Full User Stats</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Game ID</th>
+      <th>Result</th>
+      <th>Map Used</th>
+      <th>Difficulty Level</th>
+      <th>Correct Guesses</th>
+      <th>Incorrect Guesses</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody class="all-games-table">
+    {{#each games as |game|}}
+      <tr data-id="{{game.id}}">
+        <td data-id="{{game.id}}">{{game.id}}</td>
+        <td data-id="{{game.id}}">{{game.game_result}}</td>
+        <td data-id="{{game.id}}">{{game.geography}}</td>
+        <td data-id="{{game.id}}">{{game.difficulty}}</td>
+        <td data-id="{{game.id}}">{{game.guesses_correct}}</td>
+        <td data-id="{{game.id}}">{{game.guesses_incorrect}}</td>
+        <td data-id="{{game.id}}">Delete Button Here</td>
+    {{/each}}
+  </tbody>
+</table>

@@ -10,6 +10,7 @@ let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
 const gameOptions = require('../templates/game-options.handlebars')
+const fullStats = require('../templates/full-stats.handlebars')
 
 const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -180,6 +181,8 @@ const getFullStats = function () {
   api.getAllGames()
   .then((data) => {
     console.log('return data is: ', data)
+    const fullStatsHTML = fullStats({ games: data.games })
+    $('#game-state-container').html(fullStatsHTML)
   })
 }
 
