@@ -10,7 +10,7 @@ let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
 const gameOptions = require('../templates/game-options.handlebars')
-const fullStats = require('../templates/full-stats.handlebars')
+const allGamesTable = require('../templates/all-games-table.handlebars')
 
 const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -177,19 +177,31 @@ const onStartNewGame = function (event) {
   nextTurn()
 }
 
-const getFullStats = function () {
-  console.log('in getFullStats')
+const deleteGame = function (event) {
+  console.log('in deleteGame')
+  const gameId = $(event.target).attr('data-id')
+  console.log('game id is', gameId)
+  api.deleteGame(gameId)
+  .then(() => {
+    console.log('game deleted')
+    getAllGames()
+  })
+}
+
+const getAllGames = function () {
+  console.log('in getAllGames')
   api.getAllGames()
   .then((data) => {
     console.log('return data is: ', data)
-    const fullStatsHTML = fullStats({ games: data.games })
+    const fullStatsHTML = allGamesTable({ games: data.games })
     $('#game-state-container').html(fullStatsHTML)
+    $('.delete-game').on('click', deleteGame)
   })
 }
 
 const addGameHandlers = () => {
   $('#start-new-game').on('click', onStartNewGame)
-  $('#get-full-stats').on('click', getFullStats)
+  $('#get-full-stats').on('click', getAllGames)
 }
 
 const showGameOptionsPage = function () {

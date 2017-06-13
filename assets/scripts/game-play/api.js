@@ -37,7 +37,19 @@ const getAllGames = () => {
   })
 }
 
+const deleteGame = (gameId) => {
+  console.log('in getAllGames and currentGame')
+  return $.ajax({
+    url: config.apiOrigin + '/games/' + gameId,
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 module.exports = {
   postGame,
-  getAllGames
+  getAllGames,
+  deleteGame
 }
