@@ -10,12 +10,32 @@ const usStates = require('../us-states.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 
+const checkGameOver = function () {
+  console.log('in checkGameOver')
+}
+
 const onGuess = function (element, code, region) {
   event.preventDefault()
   console.log('in Guess')
   console.log('element is ', element)
   console.log('code is ', code)
   console.log('region is ', region)
+  if (currentGame.currentGuess === code) {
+    console.log('correct guess')
+    currentGame.numberCompleted += 1
+    $('#number-completed').text(currentGame.numberCompleted)
+    currentGame.numberOfItems -= 1
+    $('#number-remaining').text(currentGame.numberOfItems)
+    delete currentGame.map[currentGame.currentGuess]
+  }
+  if (currentGame.currentGuess !== code) {
+    console.log('incorrect guess')
+    currentGame.incorrectGuesses += 1
+    $('#incorrect-guesses').text(currentGame.incorrectGuesses)
+    currentGame.guessesRemaining -= 1
+    $('#remaining-guesses').text(currentGame.guessesRemaining)
+  }
+  checkGameOver()
 }
 
 const usMap = function () {
@@ -50,6 +70,8 @@ const usMap = function () {
 const onStartNewGame = function (event) {
   event.preventDefault()
   currentGame = {}
+  currentGame.numberCompleted = 0
+  currentGame.incorrectGuesses = 0
   if ($('#map-choice').val() === 'USA') {
     currentGame.map = usStates
   }
