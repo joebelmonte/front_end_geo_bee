@@ -42,7 +42,12 @@ const isGuessCorrect = function (code) {
 }
 
 const checkGameOver = function () {
-  if (currentGame.guessesRemaining === 0) {
+  if (currentGame.guessesRemaining === 0 && currentGame.difficultyLevel !== 'sudden-death') {
+    currentGame.result = 'lost'
+    currentGame.gameComplete = true
+    return 'lost'
+  }
+  if (currentGame.guessesRemaining === -1 && currentGame.difficultyLevel === 'sudden-death') {
     currentGame.result = 'lost'
     currentGame.gameComplete = true
     return 'lost'
