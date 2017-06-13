@@ -21,6 +21,26 @@ const nextTurn = function () {
   $('#number-remaining').text(currentGame.numberOfItemsRemaining)
 }
 
+const isGuessCorrect = function (code) {
+  if (currentGame.currentGuess === code) {
+    console.log('correct guess')
+    currentGame.numberCompleted += 1
+    $('#number-completed').text(currentGame.numberCompleted)
+    currentGame.numberOfItemsRemaining -= 1
+    $('#number-remaining').text(currentGame.numberOfItemsRemaining)
+    delete currentGame.map[currentGame.currentGuess]
+    currentGame.currentGuessCorrect = true
+  }
+  if (currentGame.currentGuess !== code) {
+    console.log('incorrect guess')
+    currentGame.incorrectGuesses += 1
+    $('#incorrect-guesses').text(currentGame.incorrectGuesses)
+    currentGame.guessesRemaining -= 1
+    $('#remaining-guesses').text(currentGame.guessesRemaining)
+    currentGame.currentGuessCorrect = false
+  }
+}
+
 const checkGameOver = function () {
   if (currentGame.guessesRemaining === 0) {
     currentGame.result = 'lost'
@@ -40,29 +60,21 @@ const onGuess = function (element, code, region) {
   console.log('element is ', element)
   console.log('code is ', code)
   console.log('region is ', region)
-  if (currentGame.currentGuess === code) {
-    console.log('correct guess')
-    currentGame.numberCompleted += 1
-    $('#number-completed').text(currentGame.numberCompleted)
-    currentGame.numberOfItemsRemaining -= 1
-    $('#number-remaining').text(currentGame.numberOfItemsRemaining)
-    delete currentGame.map[currentGame.currentGuess]
-  }
-  if (currentGame.currentGuess !== code) {
-    console.log('incorrect guess')
-    currentGame.incorrectGuesses += 1
-    $('#incorrect-guesses').text(currentGame.incorrectGuesses)
-    currentGame.guessesRemaining -= 1
-    $('#remaining-guesses').text(currentGame.guessesRemaining)
-  }
+  isGuessCorrect(code)
   if (checkGameOver() === 'won') {
     console.log('you won and currentGame.result is ', currentGame.result)
   }
   if (checkGameOver() === 'lost') {
     console.log('you lost and currentGame.result is ', currentGame.result)
   }
-  if (checkGameOver() === false) {
+  if (checkGameOver() === false && currentGame.currentGuessCorrect === true) {
     nextTurn()
+  }
+  if (checkGameOver() === false && currentGame.currentGuessCorrect === false) {
+    console.log('try again!')
+    console.log('checkGameOver is ', checkGameOver())
+    console.log('currentGame.currentGuess ', currentGame.currentGuess)
+    console.log('code is ', code)
   }
 }
 
