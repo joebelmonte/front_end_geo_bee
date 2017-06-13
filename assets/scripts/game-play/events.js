@@ -5,8 +5,8 @@ const getFormFields = require(`../../../lib/get-form-fields`)
 const api = require('./api')
 const ui = require('./ui')
 const store = require('../store.js')
-const usStatesArray = require('../us-states-array.js')
-const usAbbrevKey = require('../us-abbrev-key.js')
+// const usStatesArray = require('../us-states-array.js')
+const usStates = require('../us-states.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 
@@ -51,18 +51,28 @@ const onStartNewGame = function (event) {
   event.preventDefault()
   currentGame = {}
   if ($('#map-choice').val() === 'USA') {
-    currentGame.map = usStatesArray
+    currentGame.map = usStates
+    currentGame.currentGuess = Object.keys(usStates)[Math.floor(Math.random() * Object.keys(usStates).length)]
+    console.log('currentGame.currentGuess is ', currentGame.currentGuess)
   }
   currentGame.difficultyLevel = $('#difficulty-level').val()
+  if (currentGame.difficultyLevel === 'hard') {
+    currentGame.guessesRemaining = 3
+  }
+  if (currentGame.difficultyLevel === 'sudden-death') {
+    currentGame.guessesRemaining = 0
+  }
+  if (currentGame.difficultyLevel === 'easy') {
+    currentGame.guessesRemaining = Infinity
+  }
   currentGame.processOfElmination = $('#process-of-elimination').val()
   console.log('mapChoice is ', currentGame.map)
   console.log('difficulty level is ', currentGame.difficultyLevel)
   console.log('processOfElmination is ', currentGame.processOfElmination)
+  console.log('Remaining guesses is ', currentGame.guessesRemaining)
   $('#game-state-container').html(gamePlay)
   usMap()
-  const initialPrompt = currentGame.map[Math.floor(Math.random() * currentGame.map.length)]
-  const initialState = usAbbrevKey[initialPrompt]
-  $('#next-guess-prompt').text(initialState)
+  $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
 }
 
 const addGameHandlers = () => {

@@ -1,6 +1,6 @@
 'use strict'
 
-const usAbbrevKey = {
+const usStates = {
   al: 'Alabama',
   ak: 'Alaska',
   az: 'Arizona',
@@ -52,4 +52,4 @@ const usAbbrevKey = {
   wi: 'Wisconsin',
   wy: 'Wyoming'
 }
-module.exports = usAbbrevKey
+module.exports = usStates
