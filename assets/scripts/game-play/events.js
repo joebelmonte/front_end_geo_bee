@@ -10,8 +10,27 @@ const usStates = require('../us-states.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 
+const nextTurn = function () {
+  currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
+  currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
+  console.log('currentGame.currentGuess is ', currentGame.currentGuess)
+  $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
+  $('#incorrect-guesses').text(currentGame.incorrectGuesses)
+  $('#remaining-guesses').text(currentGame.guessesRemaining)
+  $('#number-completed').text(currentGame.numberCompleted)
+  $('#number-remaining').text(currentGame.numberOfItemsRemaining)
+}
+
 const checkGameOver = function () {
   console.log('in checkGameOver')
+  if (currentGame.guessesRemaining === 0) {
+    console.log('you lost')
+  }
+  if (currentGame.numberOfItemsRemaining === 0) {
+    console.log('you won')
+  } else {
+    nextTurn()
+  }
 }
 
 const onGuess = function (element, code, region) {
@@ -24,8 +43,8 @@ const onGuess = function (element, code, region) {
     console.log('correct guess')
     currentGame.numberCompleted += 1
     $('#number-completed').text(currentGame.numberCompleted)
-    currentGame.numberOfItems -= 1
-    $('#number-remaining').text(currentGame.numberOfItems)
+    currentGame.numberOfItemsRemaining -= 1
+    $('#number-remaining').text(currentGame.numberOfItemsRemaining)
     delete currentGame.map[currentGame.currentGuess]
   }
   if (currentGame.currentGuess !== code) {
@@ -75,9 +94,11 @@ const onStartNewGame = function (event) {
   if ($('#map-choice').val() === 'USA') {
     currentGame.map = usStates
   }
-  currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
-  currentGame.numberOfItems = Object.keys(currentGame.map).length
-  console.log('currentGame.currentGuess is ', currentGame.currentGuess)
+  // from here
+  // currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
+  // currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
+  // console.log('currentGame.currentGuess is ', currentGame.currentGuess)
+  // to here
   currentGame.difficultyLevel = $('#difficulty-level').val()
   if (currentGame.difficultyLevel === 'hard') {
     currentGame.guessesRemaining = 3
@@ -95,11 +116,14 @@ const onStartNewGame = function (event) {
   console.log('Remaining guesses is ', currentGame.guessesRemaining)
   $('#game-state-container').html(gamePlay)
   usMap()
-  $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
-  $('#incorrect-guesses').text(0)
-  $('#remaining-guesses').text(currentGame.guessesRemaining)
-  $('#number-completed').text(0)
-  $('#number-remaining').text(currentGame.numberOfItems)
+  // from here
+  // $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
+  // $('#incorrect-guesses').text(0)
+  // $('#remaining-guesses').text(currentGame.guessesRemaining)
+  // $('#number-completed').text(0)
+  // $('#number-remaining').text(currentGame.numberOfItemsRemaining)
+  // to here
+  nextTurn()
 }
 
 const addGameHandlers = () => {
