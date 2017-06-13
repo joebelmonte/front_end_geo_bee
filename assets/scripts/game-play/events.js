@@ -1,15 +1,15 @@
 'use strict'
 require('../jquery.vmap.js')
 require('../jquery.vmap.usa.js')
-const getFormFields = require(`../../../lib/get-form-fields`)
+// const getFormFields = require(`../../../lib/get-form-fields`)
 const api = require('./api')
 const ui = require('./ui')
-const store = require('../store.js')
-// const usStatesArray = require('../us-states-array.js')
+// const store = require('../store.js')
 const usStates = require('../us-states.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
+const gameOptions = require('../templates/game-options.handlebars')
 
 const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -119,9 +119,32 @@ const usMap = function () {
   })
 }
 
+const onSaveGame = function () {
+  console.log('in onSaveGame')
+  api.postGame(currentGame)
+  .then(ui.saveGameSuccess)
+  .then(() => {
+    $('#game-state-container').html(gameOptions)
+    addGameHandlers()
+    $('#save-abort-buttons').html('')
+  })
+  .catch(ui.saveGameFailure)
+}
+
+const onAbortGame = function () {
+  console.log('in onAbortGame and currentGame is initially ', currentGame)
+  currentGame = {}
+  console.log('currentGame should be empty: ', currentGame)
+  $('#game-state-container').html(gameOptions)
+  addGameHandlers()
+  $('#save-abort-buttons').html('')
+}
+
 const onStartNewGame = function (event) {
   event.preventDefault()
   $('#save-abort-buttons').html(saveAbortButtons)
+  $('#save-game').on('click', onSaveGame)
+  $('#abort-game').on('click', onAbortGame)
   currentGame = {}
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
