@@ -22,14 +22,15 @@ const nextTurn = function () {
 }
 
 const checkGameOver = function () {
-  console.log('in checkGameOver')
   if (currentGame.guessesRemaining === 0) {
-    console.log('you lost')
+    currentGame.result = 'lost'
+    return 'lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
-    console.log('you won')
+    currentGame.result = 'won'
+    return 'won'
   } else {
-    nextTurn()
+    return false
   }
 }
 
@@ -54,7 +55,15 @@ const onGuess = function (element, code, region) {
     currentGame.guessesRemaining -= 1
     $('#remaining-guesses').text(currentGame.guessesRemaining)
   }
-  checkGameOver()
+  if (checkGameOver() === 'won') {
+    console.log('you won and currentGame.result is ', currentGame.result)
+  }
+  if (checkGameOver() === 'lost') {
+    console.log('you lost and currentGame.result is ', currentGame.result)
+  }
+  if (checkGameOver() === false) {
+    nextTurn()
+  }
 }
 
 const usMap = function () {
