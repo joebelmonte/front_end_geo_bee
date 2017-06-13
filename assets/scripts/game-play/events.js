@@ -170,6 +170,8 @@ const onStartNewGame = function (event) {
   console.log('difficulty level is ', currentGame.difficultyLevel)
   console.log('processOfElmination is ', currentGame.processOfElmination)
   console.log('Remaining guesses is ', currentGame.guessesRemaining)
+  $('#game-map').text(currentGame.mapChoice)
+  $('#game-difficulty').text(currentGame.difficultyLevel)
   nextTurn()
 }
 
