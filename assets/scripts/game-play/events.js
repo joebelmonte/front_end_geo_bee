@@ -47,16 +47,19 @@ const checkGameOver = function () {
   if (currentGame.guessesRemaining === 0 && currentGame.difficultyLevel !== 'sudden-death') {
     currentGame.result = 'Lost'
     currentGame.gameComplete = true
+    currentGame.isResumable = 'No'
     return 'Lost'
   }
   if (currentGame.guessesRemaining === -1 && currentGame.difficultyLevel === 'sudden-death') {
     currentGame.result = 'Lost'
     currentGame.gameComplete = true
+    currentGame.isResumable = 'No'
     return 'Lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
     currentGame.result = 'Won'
     currentGame.gameComplete = true
+    currentGame.isResumable = 'No'
     return 'Won'
   } else {
     return false
@@ -148,6 +151,7 @@ const onStartNewGame = function (event) {
   $('#abort-game').on('click', onAbortGame)
   currentGame = {}
   currentGame.result = 'In Progress'
+  currentGame.isResumable = null
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
   currentGame.difficultyLevel = $('#difficulty-level').val()
@@ -193,6 +197,14 @@ const getAllGames = function () {
   api.getAllGames()
   .then((data) => {
     console.log('return data is: ', data)
+    for (let i = 0; i < data.games.length; i++) {
+      if (data.games[i].game_complete === null) {
+        data.games[i].renderResumeButton = 'yes'
+      } else {
+        data.games[i].renderResumeButton = null
+      }
+    }
+    console.log('lets see what the data is now ', data)
     const fullStatsHTML = allGamesTable({ games: data.games })
     $('#game-state-container').html(fullStatsHTML)
     $('.delete-game').on('click', deleteGame)
