@@ -9,6 +9,7 @@ const store = require('../store.js')
 const usStates = require('../us-states.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
+const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
 
 const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -70,7 +71,7 @@ const onGuess = function (element, code, region) {
   isGuessCorrect(code)
   if (checkGameOver() === 'won') {
     console.log('you won and currentGame.result is ', currentGame.result)
-    api.postGame(currentGame)
+    api.postGame()
   }
   if (checkGameOver() === 'lost') {
     console.log('you lost and currentGame.result is ', currentGame.result)
@@ -120,6 +121,7 @@ const usMap = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
+  $('#save-abort-buttons').html(saveAbortButtons)
   currentGame = {}
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
