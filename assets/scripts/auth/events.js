@@ -7,7 +7,7 @@ const ui = require('./ui')
 const mainPageNav = require('../templates/main-page-nav.handlebars')
 const store = require('../store.js')
 const landingTemplate = require('../templates/landing.handlebars')
-const gameOptions = require('../templates/game-options.handlebars')
+// const gameOptions = require('../templates/game-options.handlebars')
 
 const onSignUp = function (event) {
   event.preventDefault()
@@ -54,7 +54,8 @@ const addLandingHandlers = () => {
       $('#main-view-container').html(mainPageNav)
       $('#sign-out').on('submit', onSignOut)
       $('#change-password').on('submit', onChangePassword)
-      $('#game-state-container').html(gameOptions)
+      // $('#game-state-container').html(gameOptions)
+      gamePlayEvents.showGameOptionsPage()
       gamePlayEvents.addGameHandlers()
     }
   })

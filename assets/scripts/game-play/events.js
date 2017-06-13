@@ -175,10 +175,54 @@ const onStartNewGame = function (event) {
   nextTurn()
 }
 
+const getFullStats = function () {
+  console.log('in getFullStats')
+  api.getAllGames()
+  .then((data) => {
+    console.log('return data is: ', data)
+  })
+}
+
 const addGameHandlers = () => {
   $('#start-new-game').on('click', onStartNewGame)
+  $('#get-full-stats').on('click', getFullStats)
+}
+
+const showGameOptionsPage = function () {
+  $('#game-state-container').html(gameOptions)
+  api.getAllGames()
+  .then((data) => {
+    console.log('return data is: ', data)
+    const gamesStarted = data.games.length
+    $('#games-started').text(gamesStarted)
+    console.log('data.games is ', data.games)
+    const gamesComplete = data.games.filter(function (game) {
+      if (game.game_complete === true) {
+        return true
+      }
+    })
+    $('#games-completed').text(gamesComplete.length)
+    const gamesWon = data.games.filter(function (game) {
+      if (game.game_result === 'won') {
+        return true
+      }
+    })
+    $('#games-won').text(gamesWon.length)
+    const gamesLost = data.games.filter(function (game) {
+      if (game.game_result === 'lost') {
+        return true
+      }
+    })
+    $('#games-lost').text(gamesLost.length)
+    let winPercentage = 0
+    if (gamesComplete.length > 0) {
+      winPercentage = Math.round(gamesWon.length / gamesComplete.length * 100)
+    }
+    $('#win-percentage').text(winPercentage)
+  })
 }
 
 module.exports = {
-  addGameHandlers
+  addGameHandlers,
+  showGameOptionsPage
 }

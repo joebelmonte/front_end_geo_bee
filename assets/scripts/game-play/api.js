@@ -26,6 +26,18 @@ const postGame = (currentGame) => {
   })
 }
 
+const getAllGames = () => {
+  console.log('in getAllGames and currentGame')
+  return $.ajax({
+    url: config.apiOrigin + '/games',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 module.exports = {
-  postGame
+  postGame,
+  getAllGames
 }
