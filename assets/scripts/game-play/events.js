@@ -14,7 +14,7 @@ const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
   console.log('currentGame.currentGuess is ', currentGame.currentGuess)
-  $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
+  $('#next-guess-prompt').text(currentGame.map[currentGame.currentGuess])
   $('#incorrect-guesses').text(currentGame.incorrectGuesses)
   $('#remaining-guesses').text(currentGame.guessesRemaining)
   $('#number-completed').text(currentGame.numberCompleted)
@@ -91,14 +91,6 @@ const onStartNewGame = function (event) {
   currentGame = {}
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
-  if ($('#map-choice').val() === 'USA') {
-    currentGame.map = usStates
-  }
-  // from here
-  // currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
-  // currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
-  // console.log('currentGame.currentGuess is ', currentGame.currentGuess)
-  // to here
   currentGame.difficultyLevel = $('#difficulty-level').val()
   if (currentGame.difficultyLevel === 'hard') {
     currentGame.guessesRemaining = 3
@@ -110,19 +102,17 @@ const onStartNewGame = function (event) {
     currentGame.guessesRemaining = Infinity
   }
   currentGame.processOfElmination = $('#process-of-elimination').val()
+  currentGame.mapChoice = $('#map-choice').val()
+  $('#game-state-container').html(gamePlay)
+  if (currentGame.mapChoice === 'USA') {
+    console.log('in map choice if statement')
+    currentGame.map = usStates
+    usMap()
+  }
   console.log('mapChoice is ', currentGame.map)
   console.log('difficulty level is ', currentGame.difficultyLevel)
   console.log('processOfElmination is ', currentGame.processOfElmination)
   console.log('Remaining guesses is ', currentGame.guessesRemaining)
-  $('#game-state-container').html(gamePlay)
-  usMap()
-  // from here
-  // $('#next-guess-prompt').text(usStates[currentGame.currentGuess])
-  // $('#incorrect-guesses').text(0)
-  // $('#remaining-guesses').text(currentGame.guessesRemaining)
-  // $('#number-completed').text(0)
-  // $('#number-remaining').text(currentGame.numberOfItemsRemaining)
-  // to here
   nextTurn()
 }
 
