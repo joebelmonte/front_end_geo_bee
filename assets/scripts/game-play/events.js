@@ -10,6 +10,7 @@ const usStateCapitals = require('../us-state-capitals.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
+const saveDiscardProgressButtons = require('../templates/save-discard-progress-buttons.handlebars')
 const gameOptions = require('../templates/game-options.handlebars')
 const allGamesTable = require('../templates/all-games-table.handlebars')
 const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
@@ -216,16 +217,34 @@ const deleteGame = function (event) {
   })
 }
 
+const onSaveProgress = function () {
+  api.saveProgress(currentGame)
+  .then(() => {
+    showGameOptionsPage()
+    addGameHandlers()
+    $('#save-abort-buttons').html('')
+  })
+}
+
+const onDiscardProgress = function () {
+  showGameOptionsPage()
+  addGameHandlers()
+  $('#save-abort-buttons').html('')
+}
+
 const resumeGame = function (event) {
+  currentGame = {}
+  console.log('currentGame should be refreshed ', currentGame)
   console.log('in resumeGame')
   const gameId = $(event.target).attr('data-id')
   console.log('game id is', gameId)
+  currentGame.gameId = gameId
   api.getSingleGame(gameId)
   .then((data) => {
     console.log('game got and game is', data)
-    $('#save-abort-buttons').html(saveAbortButtons)
-    $('#save-game').on('click', onSaveGame)
-    $('#abort-game').on('click', onAbortGame)
+    $('#save-abort-buttons').html(saveDiscardProgressButtons)
+    $('#save-progress').on('click', onSaveProgress)
+    $('#discard-progress').on('click', onDiscardProgress)
     currentGame.result = 'In Progress'
     console.log('currentGame.result is', currentGame.result)
     currentGame.isResumable = null
