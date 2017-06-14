@@ -236,6 +236,7 @@ const checkGameOver = function () {
     $('#save-abort-buttons').html(playAgainButtons)
     $('#retry-game').on('click', onRetryGame)
     $('#return-to-game-options').on('click', backToGameOptions)
+    usMapendGame()
     // need to disable map click functionality
     return 'Lost'
   }
@@ -243,12 +244,24 @@ const checkGameOver = function () {
     currentGame.result = 'Lost'
     currentGame.gameComplete = true
     currentGame.isResumable = 'No'
+    $('#next-guess-prompt-outer').html('Game Over - You Lost.<br><h3>Click above to play again or return to the Game Options menu.</h3>')
+    $('#game-play-feedback').text('')
+    $('#save-abort-buttons').html(playAgainButtons)
+    $('#retry-game').on('click', onRetryGame)
+    $('#return-to-game-options').on('click', backToGameOptions)
+    usMapendGame()
     return 'Lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
     currentGame.result = 'Won'
     currentGame.gameComplete = true
     currentGame.isResumable = 'No'
+    $('#next-guess-prompt-outer').html('Game Over - You Won! Congratulations!<br><h3>Click above to play again or return to the Game Options menu.</h3>')
+    $('#game-play-feedback').text('')
+    $('#save-abort-buttons').html(playAgainButtons)
+    $('#retry-game').on('click', onRetryGame)
+    $('#return-to-game-options').on('click', backToGameOptions)
+    usMapendGame()
     return 'Won'
   } else {
     return false
@@ -318,6 +331,35 @@ const usMap = function () {
       console.log('region is ', region)
       onGuess(element, code, region)
     }
+  })
+}
+
+const usMapendGame = function () {
+  console.log('in the usMap function')
+  $('#vmap').vectorMap({
+    map: 'usa_en',
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: '#818181',
+    borderOpacity: 0.25,
+    borderWidth: 1,
+    color: '#f4f3f0',
+    enableZoom: false,
+    hoverColor: '#f4f3f0',
+    hoverOpacity: null,
+    normalizeFunction: 'linear',
+    scaleColors: ['#b6d6ff', '#005ace'],
+    selectedColor: '#f4f3f0',
+    selectedRegions: null,
+    showTooltip: false
+    // onRegionOver: function (element, code, region) {
+    //   $('#map-tooltip').text(region)
+    // },
+    // onRegionClick: function (element, code, region) {
+    //   console.log('element is ', element)
+    //   console.log('code is ', code)
+    //   console.log('region is ', region)
+    //   onGuess(element, code, region)
+    // }
   })
 }
 
