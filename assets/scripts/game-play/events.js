@@ -130,7 +130,7 @@ const onSaveGame = function () {
   api.postGame(currentGame)
   .then(ui.saveGameSuccess)
   .then(() => {
-    $('#game-state-container').html(gameOptions)
+    showGameOptionsPage()
     addGameHandlers()
     $('#save-abort-buttons').html('')
   })
@@ -141,7 +141,8 @@ const onAbortGame = function () {
   console.log('in onAbortGame and currentGame is initially ', currentGame)
   currentGame = {}
   console.log('currentGame should be empty: ', currentGame)
-  $('#game-state-container').html(gameOptions)
+  // $('#game-state-container').html(gameOptions)
+  showGameOptionsPage()
   addGameHandlers()
   $('#save-abort-buttons').html('')
 }
