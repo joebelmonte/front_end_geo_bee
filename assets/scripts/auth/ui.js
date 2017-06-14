@@ -7,7 +7,7 @@ const signUpSuccess = (response) => {
   document.getElementById('sign-up').reset()
 
   store.user = response.user
-  $('.status-message').text('Account created. Sign In!')
+  // $('.status-message').text('Account created. Sign In!')
 }
 
 const signUpFailure = () => {
@@ -19,6 +19,7 @@ const signInSuccess = (response) => {
   $('#modal-signin').modal('hide')
   document.getElementById('sign-in').reset()
   store.user = response.user
+  $('.status-message').text('')
 }
 
 const signInFailure = () => {
@@ -27,6 +28,8 @@ const signInFailure = () => {
 
 const changePasswordSuccess = (response) => {
   $('.status-message').text('Password changed successfully.')
+  $('.status-message').fadeIn('slow')
+  $('.status-message').fadeOut(3000)
   document.getElementById('change-password').reset()
 }
 

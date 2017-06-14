@@ -13,8 +13,27 @@ const onSignUp = function (event) {
   event.preventDefault()
   const data = getFormFields(this)
   api.signUp(data)
-    .then(ui.signUpSuccess)
-    .catch(ui.signUpFailure)
+  .then(ui.signUpSuccess)
+      .then(() => {
+        api.signIn(data)
+          .then(ui.signInSuccess)
+          .then($('#modal-signup').on('hidden.bs.modal', function () {
+            $('#landing-view-container').html('')
+            $('#main-view-container').html(mainPageNav)
+            $('#sign-out').on('submit', onSignOut)
+            $('#change-password').on('submit', onChangePassword)
+            gamePlayEvents.showGameOptionsPage()
+            gamePlayEvents.addGameHandlers()
+          }))
+          // .then(() => {
+          //   // $('#landing-view-container').html('')
+          //
+          //   // $('#game-state-container').html(gameOptions)
+          //
+          // })
+          .catch(ui.signInFailure)
+      })
+      .catch(ui.signUpFailure)
 }
 
 const onSignIn = function (event) {
