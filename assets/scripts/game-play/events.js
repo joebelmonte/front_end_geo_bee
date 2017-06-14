@@ -14,6 +14,17 @@ const gameOptions = require('../templates/game-options.handlebars')
 const allGamesTable = require('../templates/all-games-table.handlebars')
 const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
 
+const filterObj = function (obj, array) {
+  // This function is used by the resume game feature.
+  // It's need to filter the US States object to only inlcude
+  // States that the user has remaining to be guessed.
+  const filteredObj = {}
+  for (let i = 0; i < array.length; i++) {
+    filteredObj[array[i]] = obj[array[i]]
+  }
+  return filteredObj
+}
+
 const nextTurn = function () {
   console.log('in nextTurn and currentGame is ', currentGame)
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -223,7 +234,7 @@ const resumeGame = function (event) {
     console.log('currentGame.numberCompleted is', currentGame.numberCompleted)
     console.log('data.game.guesses_correct is', data.game.guesses_correct)
     currentGame.incorrectGuesses = data.game.guesses_incorrect
-    console.log('data.game.guesses_incorrect is',data.game.guesses_incorrect)
+    console.log('data.game.guesses_incorrect is', data.game.guesses_incorrect)
     currentGame.difficultyLevel = data.game.difficulty
     if (currentGame.difficultyLevel === 'hard') {
       currentGame.guessesRemaining = 3 - currentGame.incorrectGuesses
@@ -239,13 +250,13 @@ const resumeGame = function (event) {
     $('#game-state-container').html(gamePlay)
     if (currentGame.mapChoice === 'U.S. States') {
       console.log('in map choice if statement')
-      currentGame.map = usStates
+      currentGame.map = filterObj(usStates, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
       usMap()
     }
     if (currentGame.mapChoice === 'U.S. State Capitals') {
       console.log('in map choice if statement')
-      currentGame.map = usStateCapitals
+      currentGame.map = filterObj(usStateCapitals, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
       usMap()
     }
