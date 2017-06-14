@@ -5,7 +5,6 @@ const store = require('../store.js')
 // const currentGame = require('../current-game.js')
 
 const postGame = (currentGame) => {
-  console.log('in postGame and currentGame is ', currentGame)
   return $.ajax({
     url: config.apiOrigin + '/games',
     method: 'POST',
@@ -20,7 +19,8 @@ const postGame = (currentGame) => {
         'difficulty': currentGame.difficultyLevel,
         'game_complete': currentGame.gameComplete,
         'game_result': currentGame.result,
-        'geography': currentGame.mapChoice
+        'geography': currentGame.mapChoice,
+        'map_remaining': '[' + Object.keys(currentGame.map).toString() + ',]'
       }
     }
   })
