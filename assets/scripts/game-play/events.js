@@ -6,6 +6,7 @@ const api = require('./api')
 const ui = require('./ui')
 // const store = require('../store.js')
 const usStates = require('../us-states.js')
+const usStateCapitals = require('../us-state-capitals.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
@@ -31,6 +32,7 @@ const isGuessCorrect = function (code) {
     currentGame.numberOfItemsRemaining -= 1
     $('#number-remaining').text(currentGame.numberOfItemsRemaining)
     delete currentGame.map[currentGame.currentGuess]
+    console.log('currentGame.map is ', currentGame.map)
     currentGame.currentGuessCorrect = true
   }
   if (currentGame.currentGuess !== code) {
@@ -165,11 +167,19 @@ const onStartNewGame = function (event) {
     currentGame.guessesRemaining = Infinity
   }
   currentGame.processOfElmination = $('#process-of-elimination').val()
-  currentGame.mapChoice = $('#map-choice').val()
+  currentGame.mapChoice = $('#map-choice :selected').text()
+  console.log('The Map Choice is ', currentGame.mapChoice)
   $('#game-state-container').html(gamePlay)
-  if (currentGame.mapChoice === 'USA') {
+  if (currentGame.mapChoice === 'U.S. States') {
     console.log('in map choice if statement')
     currentGame.map = usStates
+    $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
+    usMap()
+  }
+  if (currentGame.mapChoice === 'U.S. State Capitals') {
+    console.log('in map choice if statement')
+    currentGame.map = usStateCapitals
+    $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
     usMap()
   }
   console.log('mapChoice is ', currentGame.map)
