@@ -5,8 +5,8 @@ require('../jquery.vmap.usa.js')
 const api = require('./api')
 const ui = require('./ui')
 // const store = require('../store.js')
-const usStates = require('../us-states.js')
-const usStateCapitals = require('../us-state-capitals.js')
+// const usStates = require('../us-states.js')
+// const usStateCapitals = require('../us-state-capitals.js')
 let currentGame = require('../current-game.js')
 const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
@@ -14,6 +14,10 @@ const saveDiscardProgressButtons = require('../templates/save-discard-progress-b
 const gameOptions = require('../templates/game-options.handlebars')
 const allGamesTable = require('../templates/all-games-table.handlebars')
 const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
+const playAgainButtons = require('../templates/play-again-buttons.handlebars')
+
+let usStates = {}
+let usStateCapitals = {}
 
 const filterObj = function (obj, array) {
   // This function is used by the resume game feature.
@@ -24,6 +28,116 @@ const filterObj = function (obj, array) {
     filteredObj[array[i]] = obj[array[i]]
   }
   return filteredObj
+}
+
+const defineUsStates = function () {
+  usStates = {
+    al: 'Alabama',
+    ak: 'Alaska',
+    az: 'Arizona',
+    ar: 'Arkansas',
+    ca: 'California',
+    co: 'Colorado',
+    ct: 'Connecticut',
+    de: 'Delaware',
+    fl: 'Florida',
+    ga: 'Georgia',
+    hi: 'Hawaii',
+    id: 'Idaho',
+    il: 'Illinois',
+    in: 'Indiana',
+    ia: 'Iowa',
+    ks: 'Kansas',
+    ky: 'Kentucky',
+    la: 'Louisiana',
+    me: 'Maine',
+    md: 'Maryland',
+    ma: 'Massachusetts',
+    mi: 'Michigan',
+    mn: 'Minnesota',
+    ms: 'Mississippi',
+    mo: 'Missouri',
+    mt: 'Montana',
+    ne: 'Nebraska',
+    nv: 'Nevada',
+    nh: 'New Hampshire',
+    nj: 'New Jersey',
+    nm: 'New Mexico',
+    ny: 'New York',
+    nc: 'North Carolina',
+    nd: 'North Dakota',
+    oh: 'Ohio',
+    ok: 'Oklahoma',
+    or: 'Oregon',
+    pa: 'Pennsylvania',
+    ri: 'Rhode Island',
+    sc: 'South Carolina',
+    sd: 'South Dakota',
+    tn: 'Tennessee',
+    tx: 'Texas',
+    ut: 'Utah',
+    vt: 'Vermont',
+    va: 'Virginia',
+    wa: 'Washington',
+    wv: 'West Virginia',
+    wi: 'Wisconsin',
+    wy: 'Wyoming'
+  }
+}
+
+const defineUsStateCapitals = function () {
+  usStateCapitals = {
+    al: 'Montgomery',
+    ak: 'Juneau',
+    az: 'Phoenix',
+    ar: 'Little Rock',
+    ca: 'Sacramento',
+    co: 'Denver',
+    ct: 'Hartford',
+    de: 'Dover',
+    fl: 'Tallahassee',
+    ga: 'Atlanta',
+    hi: 'Honolulu',
+    id: 'Boise',
+    il: 'Springfield',
+    in: 'Indianapolis',
+    ia: 'Des Moines',
+    ks: 'Topeka',
+    ky: 'Frankfort',
+    la: 'Baton Rouge',
+    me: 'Augusta',
+    md: 'Annapolis',
+    ma: 'Boston',
+    mi: 'Lansing',
+    mn: 'Saint Paul',
+    ms: 'Jackson',
+    mo: 'Jefferson City',
+    mt: 'Helena',
+    ne: 'Lincoln',
+    nv: 'Carson City',
+    nh: 'Concord',
+    nj: 'Trenton',
+    nm: 'Santa Fe',
+    ny: 'Albany',
+    nc: 'Raleigh',
+    nd: 'Bismarck',
+    oh: 'Columbus',
+    ok: 'Oklahoma City',
+    or: 'Salem',
+    pa: 'Harrisburg',
+    ri: 'Providence',
+    sc: 'Columbia',
+    sd: 'Pierre',
+    tn: 'Nashville',
+    tx: 'Austin',
+    ut: 'Salt Lake City',
+    vt: 'Montpelier',
+    va: 'Richmond',
+    wa: 'Olympia',
+    wv: 'Charleston',
+    wi: 'Madison',
+    wy: 'Cheyenne'
+  }
 }
 
 const nextTurn = function () {
@@ -46,7 +160,6 @@ const isGuessCorrect = function (code, region) {
     $('#game-play-feedback').fadeOut(3000)
     if (currentGame.mapChoice === 'U.S. State Capitals') {
       $('#game-play-feedback-detail').show()
-      console.log('in isGuessCorrect and  currentGame.map[currentGame.currentGuess] is ', currentGame.map[currentGame.currentGuess])
       $('#game-play-feedback-detail').text(currentGame.map[currentGame.currentGuess] + ' is the capital of ' + region + '!')
       $('#game-play-feedback-detail').fadeOut(3000)
     }
@@ -71,11 +184,59 @@ const isGuessCorrect = function (code, region) {
   }
 }
 
+const onRetryGame = function () {
+  console.log('in onRetryGame')
+  $('#save-abort-buttons').html(saveAbortButtons)
+  $('#save-game').on('click', onSaveGame)
+  $('#abort-game').on('click', onAbortGame)
+  currentGame.isResumed = false
+  currentGame.result = 'In Progress'
+  currentGame.isResumable = null
+  currentGame.numberCompleted = 0
+  currentGame.incorrectGuesses = 0
+  console.log('in onRetryGame and currentGame.difficultyLevel is ', currentGame.difficultyLevel)
+  if (currentGame.difficultyLevel === 'hard') {
+    currentGame.guessesRemaining = 3
+  }
+  if (currentGame.difficultyLevel === 'sudden-death') {
+    currentGame.guessesRemaining = 0
+  }
+  if (currentGame.difficultyLevel === 'easy') {
+    currentGame.guessesRemaining = Infinity
+  }
+  console.log('in onRetryGame and currentGame.guessesRemaining is ', currentGame.guessesRemaining)
+  $('#game-state-container').html(gamePlay)
+  if (currentGame.mapChoice === 'U.S. States') {
+    console.log('in map choice if statement')
+    defineUsStates()
+    currentGame.map = usStates
+    $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
+    usMap()
+  }
+  if (currentGame.mapChoice === 'U.S. State Capitals') {
+    console.log('in map choice if statement')
+    defineUsStateCapitals()
+    currentGame.map = usStateCapitals
+    $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
+    usMap()
+  }
+  $('#game-map').text(currentGame.mapChoice)
+  $('#game-difficulty').text(currentGame.difficultyLevel)
+  currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
+  nextTurn()
+}
+
 const checkGameOver = function () {
   if (currentGame.guessesRemaining === 0 && currentGame.difficultyLevel !== 'sudden-death') {
     currentGame.result = 'Lost'
     currentGame.gameComplete = true
     currentGame.isResumable = 'No'
+    $('#next-guess-prompt-outer').html('Game Over - You Lost.<br><h3>Click above to play again or return to the Game Options menu.</h3>')
+    $('#game-play-feedback').text('')
+    $('#save-abort-buttons').html(playAgainButtons)
+    $('#retry-game').on('click', onRetryGame)
+    $('#return-to-game-options').on('click', backToGameOptions)
+    // need to disable map click functionality
     return 'Lost'
   }
   if (currentGame.guessesRemaining === -1 && currentGame.difficultyLevel === 'sudden-death') {
@@ -184,6 +345,9 @@ const onAbortGame = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
+  // delete currentGame.map
+  console.log('at start of startNewGame and currentGame.map is', currentGame.map)
+  console.log('at start of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   $('#save-abort-buttons').html(saveAbortButtons)
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
@@ -209,12 +373,15 @@ const onStartNewGame = function (event) {
   $('#game-state-container').html(gamePlay)
   if (currentGame.mapChoice === 'U.S. States') {
     console.log('in map choice if statement')
+    defineUsStates()
+    console.log('usStates is ', usStates)
     currentGame.map = usStates
     $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
     usMap()
   }
   if (currentGame.mapChoice === 'U.S. State Capitals') {
     console.log('in map choice if statement')
+    defineUsStateCapitals()
     currentGame.map = usStateCapitals
     $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
     usMap()
@@ -226,6 +393,8 @@ const onStartNewGame = function (event) {
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
+  console.log('at end of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
+  console.log('at end of startNewGame and currentGame.map is', currentGame.map)
   nextTurn()
 }
 
