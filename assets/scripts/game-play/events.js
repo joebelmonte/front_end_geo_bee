@@ -213,6 +213,7 @@ const onStartNewGame = function (event) {
   console.log('Remaining guesses is ', currentGame.guessesRemaining)
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
+  currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
   nextTurn()
 }
 
