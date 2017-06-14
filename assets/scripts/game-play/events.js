@@ -12,6 +12,7 @@ const gamePlay = require('../templates/game-play.handlebars')
 const saveAbortButtons = require('../templates/save-abort-buttons.handlebars')
 const gameOptions = require('../templates/game-options.handlebars')
 const allGamesTable = require('../templates/all-games-table.handlebars')
+const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
 
 const nextTurn = function () {
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
@@ -203,6 +204,13 @@ const deleteGame = function (event) {
   })
 }
 
+const backToGameOptions = function () {
+  console.log('in backToGameOptions')
+  showGameOptionsPage()
+  addGameHandlers()
+  $('#save-abort-buttons').html('')
+}
+
 const getAllGames = function () {
   console.log('in getAllGames')
   api.getAllGames()
@@ -220,6 +228,8 @@ const getAllGames = function () {
     $('#game-state-container').html(fullStatsHTML)
     $('.delete-game').on('click', deleteGame)
   })
+  $('#save-abort-buttons').html(backToGameOptionsButton)
+  $('#back-to-game-options').on('click', backToGameOptions)
 }
 
 const addGameHandlers = () => {
