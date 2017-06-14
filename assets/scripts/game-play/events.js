@@ -89,14 +89,23 @@ const onGuess = function (element, code, region) {
   console.log('code is ', code)
   console.log('region is ', region)
   isGuessCorrect(code)
-  if (checkGameOver() === 'Won') {
+  if (checkGameOver() === 'Won' && currentGame.isResumed === false) {
     console.log('you won and currentGame.result is ', currentGame.result)
     api.postGame(currentGame)
   }
-  if (checkGameOver() === 'Lost') {
+  if (checkGameOver() === 'Lost' && currentGame.isResumed === false) {
     console.log('you lost and currentGame.result is ', currentGame.result)
     console.log('prior to sending to the API the currentGame object is ', currentGame)
     api.postGame(currentGame)
+  }
+  if (checkGameOver() === 'Won' && currentGame.isResumed === true) {
+    console.log('you won a resumed game and currentGame.result is ', currentGame.result)
+    api.patchGame(currentGame)
+  }
+  if (checkGameOver() === 'Lost' && currentGame.isResumed === true) {
+    console.log('you lost a resumed game and currentGame.result is ', currentGame.result)
+    console.log('prior to sending to the API the currentGame object is ', currentGame)
+    api.patchGame(currentGame)
   }
   if (checkGameOver() === false && currentGame.currentGuessCorrect === true) {
     console.log('Correct - time for another turn')
@@ -167,6 +176,7 @@ const onStartNewGame = function (event) {
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
   currentGame = {}
+  currentGame.isResumed = false
   currentGame.result = 'In Progress'
   currentGame.isResumable = null
   currentGame.numberCompleted = 0
@@ -218,7 +228,7 @@ const deleteGame = function (event) {
 }
 
 const onSaveProgress = function () {
-  api.saveProgress(currentGame)
+  api.patchGame(currentGame)
   .then(() => {
     showGameOptionsPage()
     addGameHandlers()
@@ -239,6 +249,7 @@ const resumeGame = function (event) {
   const gameId = $(event.target).attr('data-id')
   console.log('game id is', gameId)
   currentGame.gameId = gameId
+  currentGame.isResumed = true
   api.getSingleGame(gameId)
   .then((data) => {
     console.log('game got and game is', data)

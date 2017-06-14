@@ -26,7 +26,7 @@ const postGame = (currentGame) => {
   })
 }
 
-const saveProgress = (currentGame) => {
+const patchGame = (currentGame) => {
   return $.ajax({
     url: config.apiOrigin + '/games/' + currentGame.gameId,
     method: 'PATCH',
@@ -86,5 +86,5 @@ module.exports = {
   getAllGames,
   deleteGame,
   getSingleGame,
-  saveProgress
+  patchGame
 }
