@@ -15,6 +15,7 @@ const allGamesTable = require('../templates/all-games-table.handlebars')
 const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
 
 const nextTurn = function () {
+  console.log('in nextTurn and currentGame is ', currentGame)
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
   console.log('currentGame.currentGuess is ', currentGame.currentGuess)
@@ -204,6 +205,56 @@ const deleteGame = function (event) {
   })
 }
 
+const resumeGame = function (event) {
+  console.log('in resumeGame')
+  const gameId = $(event.target).attr('data-id')
+  console.log('game id is', gameId)
+  api.getSingleGame(gameId)
+  .then((data) => {
+    console.log('game got and game is', data)
+    $('#save-abort-buttons').html(saveAbortButtons)
+    $('#save-game').on('click', onSaveGame)
+    $('#abort-game').on('click', onAbortGame)
+    currentGame.result = 'In Progress'
+    console.log('currentGame.result is', currentGame.result)
+    currentGame.isResumable = null
+    console.log('currentGame.isResumable is', currentGame.isResumable)
+    currentGame.numberCompleted = data.game.guesses_correct
+    console.log('currentGame.numberCompleted is', currentGame.numberCompleted)
+    console.log('data.game.guesses_correct is', data.game.guesses_correct)
+    currentGame.incorrectGuesses = data.game.guesses_incorrect
+    console.log('data.game.guesses_incorrect is',data.game.guesses_incorrect)
+    currentGame.difficultyLevel = data.game.difficulty
+    if (currentGame.difficultyLevel === 'hard') {
+      currentGame.guessesRemaining = 3 - currentGame.incorrectGuesses
+    }
+    if (currentGame.difficultyLevel === 'sudden-death') {
+      currentGame.guessesRemaining = 0
+    }
+    if (currentGame.difficultyLevel === 'easy') {
+      currentGame.guessesRemaining = Infinity
+    }
+    // // currentGame.processOfElmination NOT IN DB YET
+    currentGame.mapChoice = data.game.geography
+    $('#game-state-container').html(gamePlay)
+    if (currentGame.mapChoice === 'U.S. States') {
+      console.log('in map choice if statement')
+      currentGame.map = usStates
+      $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
+      usMap()
+    }
+    if (currentGame.mapChoice === 'U.S. State Capitals') {
+      console.log('in map choice if statement')
+      currentGame.map = usStateCapitals
+      $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
+      usMap()
+    }
+    $('#game-map').text(currentGame.mapChoice)
+    $('#game-difficulty').text(currentGame.difficultyLevel)
+    nextTurn()
+  })
+}
+
 const backToGameOptions = function () {
   console.log('in backToGameOptions')
   showGameOptionsPage()
@@ -227,6 +278,7 @@ const getAllGames = function () {
     const fullStatsHTML = allGamesTable({ games: data.games })
     $('#game-state-container').html(fullStatsHTML)
     $('.delete-game').on('click', deleteGame)
+    $('.resume-game').on('click', resumeGame)
   })
   $('#save-abort-buttons').html(backToGameOptionsButton)
   $('#back-to-game-options').on('click', backToGameOptions)

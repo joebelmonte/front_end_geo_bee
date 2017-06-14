@@ -20,7 +20,7 @@
         <td data-id="{{game.id}}">{{game.difficulty}}</td>
         <td data-id="{{game.id}}">{{game.guesses_correct}}</td>
         <td data-id="{{game.id}}">{{game.guesses_incorrect}}</td>
-        <td data-id="{{game.id}}"><button type="button" class="btn btn-danger delete-game" data-id="{{game.id}}">Delete</button>{{#if game.renderResumeButton}}<button type="button" class="btn btn-success">Resume</button>{{/if}}</td>
+        <td data-id="{{game.id}}"><button type="button" class="btn btn-danger delete-game" data-id="{{game.id}}">Delete</button>{{#if game.renderResumeButton}}<button type="button" class="btn btn-success resume-game" data-id="{{game.id}}">Resume</button>{{/if}}</td>
     {{/each}}
   </tbody>
 </table>
