@@ -38,9 +38,18 @@ const nextTurn = function () {
   $('#number-remaining').text(currentGame.numberOfItemsRemaining)
 }
 
-const isGuessCorrect = function (code) {
+const isGuessCorrect = function (code, region) {
   if (currentGame.currentGuess === code) {
     console.log('correct guess')
+    $('#game-play-feedback').show()
+    $('#game-play-feedback').text('Correct!')
+    $('#game-play-feedback').fadeOut(3000)
+    if (currentGame.mapChoice === 'U.S. State Capitals') {
+      $('#game-play-feedback-detail').show()
+      console.log('in isGuessCorrect and  currentGame.map[currentGame.currentGuess] is ', currentGame.map[currentGame.currentGuess])
+      $('#game-play-feedback-detail').text(currentGame.map[currentGame.currentGuess] + ' is the capital of ' + region + '!')
+      $('#game-play-feedback-detail').fadeOut(3000)
+    }
     currentGame.numberCompleted += 1
     $('#number-completed').text(currentGame.numberCompleted)
     currentGame.numberOfItemsRemaining -= 1
@@ -51,6 +60,9 @@ const isGuessCorrect = function (code) {
   }
   if (currentGame.currentGuess !== code) {
     console.log('incorrect guess')
+    $('#game-play-feedback').show()
+    $('#game-play-feedback').text('Sorry, try again...')
+    $('#game-play-feedback').fadeOut(2000)
     currentGame.incorrectGuesses += 1
     $('#incorrect-guesses').text(currentGame.incorrectGuesses)
     currentGame.guessesRemaining -= 1
@@ -88,7 +100,7 @@ const onGuess = function (element, code, region) {
   console.log('element is ', element)
   console.log('code is ', code)
   console.log('region is ', region)
-  isGuessCorrect(code)
+  isGuessCorrect(code, region)
   if (checkGameOver() === 'Won' && currentGame.isResumed === false) {
     console.log('you won and currentGame.result is ', currentGame.result)
     api.postGame(currentGame)
