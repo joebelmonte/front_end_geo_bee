@@ -185,7 +185,10 @@ const isGuessCorrect = function (code, region) {
   }
   if (currentGame.currentGuess !== code) {
     console.log('incorrect guess')
-    $('#game-play-feedback').text('Sorry, try again...')
+    $('#game-play-feedback').text('Nope, that\'s ' + region + '. Try again...')
+    if (currentGame.mapChoice === 'U.S. State Capitals') {
+      $('#game-play-feedback').text('Nope, ' + currentGame.map[currentGame.currentGuess] + ' isn\'t the capital of ' + region + '. Try again...')
+    }
     currentGame.incorrectGuesses += 1
     $('#incorrect-guesses').text(currentGame.incorrectGuesses)
     currentGame.guessesRemaining -= 1
