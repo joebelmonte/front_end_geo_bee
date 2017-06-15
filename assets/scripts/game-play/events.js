@@ -15,9 +15,12 @@ const gameOptions = require('../templates/game-options.handlebars')
 const allGamesTable = require('../templates/all-games-table.handlebars')
 const backToGameOptionsButton = require('../templates/back-to-game-options-button.handlebars')
 const playAgainButtons = require('../templates/play-again-buttons.handlebars')
+const instructionsButton = require('../templates/instructions-button.handlebars')
+const instructionsText = require('../templates/instructions-text.handlebars')
 
 let usStates = {}
 let usStateCapitals = {}
+let instructionsDisplayed = false
 
 const filterObj = function (obj, array) {
   // This function is used by the resume game feature.
@@ -350,9 +353,9 @@ const onSaveGame = function () {
   api.postGame(currentGame)
   .then(ui.saveGameSuccess)
   .then(() => {
+    $('#save-abort-buttons').html('')
     showGameOptionsPage()
     addGameHandlers()
-    $('#save-abort-buttons').html('')
   })
   .catch(ui.saveGameFailure)
 }
@@ -362,9 +365,9 @@ const onAbortGame = function () {
   currentGame = {}
   console.log('currentGame should be empty: ', currentGame)
   // $('#game-state-container').html(gameOptions)
+  $('#save-abort-buttons').html('')
   showGameOptionsPage()
   addGameHandlers()
-  $('#save-abort-buttons').html('')
 }
 
 const onStartNewGame = function (event) {
@@ -440,16 +443,16 @@ const deleteGame = function (event) {
 const onSaveProgress = function () {
   api.patchGame(currentGame)
   .then(() => {
+    $('#save-abort-buttons').html('')
     showGameOptionsPage()
     addGameHandlers()
-    $('#save-abort-buttons').html('')
   })
 }
 
 const onDiscardProgress = function () {
+  $('#save-abort-buttons').html('')
   showGameOptionsPage()
   addGameHandlers()
-  $('#save-abort-buttons').html('')
 }
 
 const resumeGame = function (event) {
@@ -519,9 +522,9 @@ const resumeGame = function (event) {
 
 const backToGameOptions = function () {
   console.log('in backToGameOptions')
+  $('#save-abort-buttons').html('')
   showGameOptionsPage()
   addGameHandlers()
-  $('#save-abort-buttons').html('')
 }
 
 const getAllGames = function () {
@@ -553,8 +556,26 @@ const addGameHandlers = () => {
   $('#get-full-stats').on('click', getAllGames)
 }
 
+const onInstructionsButton = function () {
+  console.log('clicking the instructions button')
+  console.log('instructionsDisplayed is ', instructionsDisplayed)
+  if (instructionsDisplayed === false) {
+    console.log('in instructionsDisplayed false statement')
+    $('#instructions-text').html(instructionsText)
+  }
+  if (instructionsDisplayed === true) {
+    $('#instructions-text').html('')
+  }
+  console.log('prior to the toggle instructionsDisplayed is ', instructionsDisplayed)
+  instructionsDisplayed = !instructionsDisplayed
+  console.log('after the toggle instructionsDisplayed is ', instructionsDisplayed)
+}
+
 const showGameOptionsPage = function () {
   $('#game-state-container').html(gameOptions)
+  $('#save-abort-buttons').html(instructionsButton)
+  $('#instructions-button').on('click', onInstructionsButton)
+  instructionsDisplayed = false
   api.getAllGames()
   .then((data) => {
     console.log('return data is: ', data)
