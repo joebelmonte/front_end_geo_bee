@@ -247,7 +247,7 @@ const usMapRemoveClicks = function () {
 }
 
 const checkGameOver = function () {
-  if (currentGame.guessesRemaining === 0 && currentGame.difficultyLevel !== 'sudden-death') {
+  if (currentGame.guessesRemaining < 0) {
     currentGame.result = 'Lost'
     currentGame.gameComplete = true
     currentGame.isResumable = 'No'
@@ -257,19 +257,8 @@ const checkGameOver = function () {
     $('#retry-game').on('click', onRetryGame)
     $('#return-to-game-options').on('click', backToGameOptions)
     usMapRemoveClicks()
+    $('#remaining-guesses').text('NA')
     // need to disable map click functionality
-    return 'Lost'
-  }
-  if (currentGame.guessesRemaining === -1 && currentGame.difficultyLevel === 'sudden-death') {
-    currentGame.result = 'Lost'
-    currentGame.gameComplete = true
-    currentGame.isResumable = 'No'
-    $('#next-guess-prompt-outer').html('Game Over - You Lost.<br><h3>Click above to play again or return to the Game Options menu.</h3>')
-    $('#game-play-feedback').text('')
-    $('#save-abort-buttons').html(playAgainButtons)
-    $('#retry-game').on('click', onRetryGame)
-    $('#return-to-game-options').on('click', backToGameOptions)
-    usMapRemoveClicks()
     return 'Lost'
   }
   if (currentGame.numberOfItemsRemaining === 0) {
