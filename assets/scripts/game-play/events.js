@@ -18,6 +18,7 @@ const playAgainButtons = require('../templates/play-again-buttons.handlebars')
 
 let usStates = {}
 let usStateCapitals = {}
+const processOfElimStateArray = []
 
 const filterObj = function (obj, array) {
   // This function is used by the resume game feature.
@@ -150,6 +151,7 @@ const nextTurn = function () {
   $('#remaining-guesses').text(currentGame.guessesRemaining)
   $('#number-completed').text(currentGame.numberCompleted)
   $('#number-remaining').text(currentGame.numberOfItemsRemaining)
+  console.log('end of nextTurn')
 }
 
 const isGuessCorrect = function (code, region) {
@@ -170,6 +172,15 @@ const isGuessCorrect = function (code, region) {
     delete currentGame.map[currentGame.currentGuess]
     console.log('currentGame.map is ', currentGame.map)
     currentGame.currentGuessCorrect = true
+    processOfElimStateArray.push(code)
+    console.log('processOfElimStateArray is now ', processOfElimStateArray)
+    // $('#vmap').vectorMap('set', 'selectedRegions', processOfElimStateArray)
+    // jQuery('#vmap').vectorMap('set', 'colors', {us: '#0000ff'})
+    // $('#vmap').vectorMap('set', 'selectedRegions', 'NY')
+    console.log('about to set the color of code and code is', code)
+    const stateColors = {}
+    stateColors[code] = '#090000'
+    $('#vmap').vectorMap('set', 'colors', stateColors)
   }
   if (currentGame.currentGuess !== code) {
     console.log('incorrect guess')
@@ -303,6 +314,7 @@ const onGuess = function (element, code, region) {
     console.log('currentGame.currentGuess ', currentGame.currentGuess)
     console.log('code is ', code)
   }
+  console.log('end of onGuess')
 }
 
 const usMap = function () {
@@ -320,13 +332,14 @@ const usMap = function () {
     normalizeFunction: 'linear',
     scaleColors: ['#b6d6ff', '#005ace'],
     selectedColor: '#c9dfaf',
-    selectedRegions: null,
+    selectedRegions: processOfElimStateArray,
     showTooltip: false,
     // onRegionOver: function (element, code, region) {
     //   $('#map-tooltip').text(region)
     // },
     onRegionClick: function (element, code, region) {
-      console.log('element is ', element)
+      console.log('in usMap click event')
+      console.log('element in map is ', element)
       console.log('code is ', code)
       console.log('region is ', region)
       onGuess(element, code, region)
@@ -387,7 +400,7 @@ const onAbortGame = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
-  // delete currentGame.map
+  processOfElimStateArray.length = 0
   console.log('at start of startNewGame and currentGame.map is', currentGame.map)
   console.log('at start of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   $('#save-abort-buttons').html(saveAbortButtons)
