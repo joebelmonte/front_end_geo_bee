@@ -501,15 +501,18 @@ const resumeGame = function (event) {
     }
     // // currentGame.processOfElmination NOT IN DB YET
     currentGame.mapChoice = data.game.geography
+    console.log('data.game.geography is', data.game.geography)
     $('#game-state-container').html(gamePlay)
     if (currentGame.mapChoice === 'U.S. States') {
       console.log('in map choice if statement')
+      defineUsStates()
       currentGame.map = filterObj(usStates, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
       usMap()
     }
     if (currentGame.mapChoice === 'U.S. State Capitals') {
       console.log('in map choice if statement')
+      defineUsStateCapitals()
       currentGame.map = filterObj(usStateCapitals, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
       usMap()
