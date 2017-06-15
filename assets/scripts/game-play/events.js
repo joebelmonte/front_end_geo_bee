@@ -174,6 +174,8 @@ const isGuessCorrect = function (code, region) {
       $('#game-play-feedback-detail').fadeOut(3000)
     }
     currentGame.numberCompleted += 1
+    currentGame.mapCompleted.push(code)
+    console.log('currentGame.mapCompleted is ', currentGame.mapCompleted)
     $('#number-completed').text(currentGame.numberCompleted)
     currentGame.numberOfItemsRemaining -= 1
     $('#number-remaining').text(currentGame.numberOfItemsRemaining)
@@ -409,6 +411,8 @@ const onStartNewGame = function (event) {
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
   currentGame = {}
+  currentGame.mapCompleted = []
+  currentGame.mapCompleted.length = 0
   currentGame.isResumed = false
   currentGame.result = 'In Progress'
   currentGame.isResumable = null
@@ -517,7 +521,6 @@ const resumeGame = function (event) {
     if (currentGame.difficultyLevel === 'easy') {
       currentGame.guessesRemaining = Infinity
     }
-    // // currentGame.processOfElmination NOT IN DB YET
     currentGame.mapChoice = data.game.geography
     console.log('data.game.geography is', data.game.geography)
     $('#game-state-container').html(gamePlay)
@@ -537,6 +540,15 @@ const resumeGame = function (event) {
     }
     $('#game-map').text(currentGame.mapChoice)
     $('#game-difficulty').text(currentGame.difficultyLevel)
+    currentGame.processOfElmination = data.game.process_of_elimination
+    console.log('currentGame.processOfElmination is ', currentGame.processOfElmination)
+    currentGame.mapCompleted = data.game.map_completed
+    console.log('currentGame.mapCompleted is ', currentGame.mapCompleted)
+    if (currentGame.processOfElmination === 'on') {
+      for (let i = 0; i < currentGame.mapCompleted.length; i++) {
+        processOfElimColoring(currentGame.mapCompleted[i])
+      }
+    }
     nextTurn()
   })
 }

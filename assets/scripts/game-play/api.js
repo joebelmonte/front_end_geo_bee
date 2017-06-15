@@ -20,7 +20,9 @@ const postGame = (currentGame) => {
         'game_complete': currentGame.gameComplete,
         'game_result': currentGame.result,
         'geography': currentGame.mapChoice,
-        'map_remaining': '[' + Object.keys(currentGame.map).toString() + ',]'
+        'process_of_elimination': currentGame.processOfElmination,
+        'map_remaining': '[' + Object.keys(currentGame.map).toString() + ',]',
+        'map_completed': '[' + currentGame.mapCompleted.toString() + ',]'
       }
     }
   })
@@ -42,7 +44,9 @@ const patchGame = (currentGame) => {
         'game_complete': currentGame.gameComplete,
         'game_result': currentGame.result,
         'geography': currentGame.mapChoice,
-        'map_remaining': '[' + Object.keys(currentGame.map).toString() + ',]'
+        'process_of_elimination': currentGame.processOfElmination,
+        'map_remaining': '[' + Object.keys(currentGame.map).toString() + ',]',
+        'map_completed': '[' + currentGame.mapCompleted.toString() + ',]'
       }
     }
   })
