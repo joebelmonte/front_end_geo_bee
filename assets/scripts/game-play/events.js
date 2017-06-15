@@ -178,8 +178,9 @@ const isGuessCorrect = function (code, region) {
     $('#number-completed').text(currentGame.numberCompleted)
     currentGame.numberOfItemsRemaining -= 1
     $('#number-remaining').text(currentGame.numberOfItemsRemaining)
+    console.log('in isGuessCorrect prior to deleting and delete currentGame.map[currentGame.currentGuess] is ', currentGame.map[currentGame.currentGuess])
     delete currentGame.map[currentGame.currentGuess]
-    console.log('currentGame.map is ', currentGame.map)
+    console.log('currentGame.map after deleting is is ', currentGame.map)
     currentGame.currentGuessCorrect = true
     processOfElimColoring(code)
   }
@@ -539,6 +540,9 @@ const getAllGames = function () {
         data.games[i].renderResumeButton = null
       }
       data.games[i].percentComplete = Math.round(data.games[i].guesses_correct / (data.games[i].guesses_correct + data.games[i].map_remaining.length) * 100)
+      if (data.games[i].game_result === 'Won') {
+        data.games[i].percentComplete = 100
+      }
     }
     console.log('lets see what the data is now ', data)
     console.log('data.games is', data.games)
