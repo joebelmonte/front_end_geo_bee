@@ -18,7 +18,6 @@ const playAgainButtons = require('../templates/play-again-buttons.handlebars')
 
 let usStates = {}
 let usStateCapitals = {}
-const processOfElimStateArray = []
 
 const filterObj = function (obj, array) {
   // This function is used by the resume game feature.
@@ -154,6 +153,15 @@ const nextTurn = function () {
   console.log('end of nextTurn')
 }
 
+const processOfElimColoring = function (code) {
+  if (currentGame.processOfElmination === 'on') {
+    const processOfElimColors = {}
+    processOfElimColors[code] = '#090000'
+    $('#vmap').vectorMap('set', 'colors', processOfElimColors)
+    $('#process-of-elimination-indicator').text(' with process of elimination on')
+  }
+}
+
 const isGuessCorrect = function (code, region) {
   if (currentGame.currentGuess === code) {
     console.log('correct guess')
@@ -172,15 +180,7 @@ const isGuessCorrect = function (code, region) {
     delete currentGame.map[currentGame.currentGuess]
     console.log('currentGame.map is ', currentGame.map)
     currentGame.currentGuessCorrect = true
-    processOfElimStateArray.push(code)
-    console.log('processOfElimStateArray is now ', processOfElimStateArray)
-    // $('#vmap').vectorMap('set', 'selectedRegions', processOfElimStateArray)
-    // jQuery('#vmap').vectorMap('set', 'colors', {us: '#0000ff'})
-    // $('#vmap').vectorMap('set', 'selectedRegions', 'NY')
-    console.log('about to set the color of code and code is', code)
-    const stateColors = {}
-    stateColors[code] = '#090000'
-    $('#vmap').vectorMap('set', 'colors', stateColors)
+    processOfElimColoring(code)
   }
   if (currentGame.currentGuess !== code) {
     console.log('incorrect guess')
@@ -230,6 +230,9 @@ const onRetryGame = function () {
     currentGame.map = usStateCapitals
     $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
     usMap()
+  }
+  if (currentGame.processOfElmination === 'on') {
+    $('#process-of-elimination-indicator').text(' with process of elimination on')
   }
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
@@ -332,7 +335,7 @@ const usMap = function () {
     normalizeFunction: 'linear',
     scaleColors: ['#b6d6ff', '#005ace'],
     selectedColor: '#c9dfaf',
-    selectedRegions: processOfElimStateArray,
+    selectedRegions: null,
     showTooltip: false,
     // onRegionOver: function (element, code, region) {
     //   $('#map-tooltip').text(region)
@@ -400,7 +403,6 @@ const onAbortGame = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
-  processOfElimStateArray.length = 0
   console.log('at start of startNewGame and currentGame.map is', currentGame.map)
   console.log('at start of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   $('#save-abort-buttons').html(saveAbortButtons)
@@ -447,6 +449,9 @@ const onStartNewGame = function (event) {
   console.log('Remaining guesses is ', currentGame.guessesRemaining)
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
+  if (currentGame.processOfElmination === 'on') {
+    $('#process-of-elimination-indicator').text(' with process of elimination on')
+  }
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
   console.log('at end of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   console.log('at end of startNewGame and currentGame.map is', currentGame.map)
