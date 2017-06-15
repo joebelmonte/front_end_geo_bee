@@ -168,13 +168,9 @@ const processOfElimColoring = function (code) {
 const isGuessCorrect = function (code, region) {
   if (currentGame.currentGuess === code) {
     console.log('correct guess')
-    $('#game-play-feedback').show()
-    $('#game-play-feedback').text('Correct!')
-    $('#game-play-feedback').fadeOut(3000)
+    $('#game-play-feedback').text('Correct! Next question:')
     if (currentGame.mapChoice === 'U.S. State Capitals') {
-      $('#game-play-feedback-detail').show()
-      $('#game-play-feedback-detail').text(currentGame.map[currentGame.currentGuess] + ' is the capital of ' + region + '!')
-      $('#game-play-feedback-detail').fadeOut(3000)
+      $('#game-play-feedback').text('Correct! ' + currentGame.map[currentGame.currentGuess] + ' is the capital of ' + region + '. Next question:')
     }
     currentGame.numberCompleted += 1
     currentGame.mapCompleted.push(code)
@@ -189,9 +185,7 @@ const isGuessCorrect = function (code, region) {
   }
   if (currentGame.currentGuess !== code) {
     console.log('incorrect guess')
-    $('#game-play-feedback').show()
     $('#game-play-feedback').text('Sorry, try again...')
-    $('#game-play-feedback').fadeOut(2000)
     currentGame.incorrectGuesses += 1
     $('#incorrect-guesses').text(currentGame.incorrectGuesses)
     currentGame.guessesRemaining -= 1
@@ -242,6 +236,7 @@ const onRetryGame = function () {
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
+  $('#game-play-feedback').text('Next question:')
   nextTurn()
 }
 
@@ -426,6 +421,7 @@ const onStartNewGame = function (event) {
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
   console.log('at end of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   console.log('at end of startNewGame and currentGame.map is', currentGame.map)
+  $('#game-play-feedback').text('Next question:')
   nextTurn()
 }
 
@@ -516,6 +512,7 @@ const resumeGame = function (event) {
         processOfElimColoring(currentGame.mapCompleted[i])
       }
     }
+    $('#game-play-feedback').text('Next question:')
     nextTurn()
   })
 }
