@@ -535,7 +535,7 @@ const getAllGames = function () {
       } else {
         data.games[i].renderResumeButton = null
       }
-      data.games[i].percentComplete = Math.round(data.games[i].guesses_correct / data.games[i].map_remaining.length * 100)
+      data.games[i].percentComplete = Math.round(data.games[i].guesses_correct / (data.games[i].guesses_correct + data.games[i].map_remaining.length) * 100)
     }
     console.log('lets see what the data is now ', data)
     console.log('data.games is', data.games)
