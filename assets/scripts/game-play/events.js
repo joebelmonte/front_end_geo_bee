@@ -565,10 +565,14 @@ const onInstructionsButton = function () {
   console.log('instructionsDisplayed is ', instructionsDisplayed)
   if (instructionsDisplayed === false) {
     console.log('in instructionsDisplayed false statement')
+    $('#instructions-text').hide()
     $('#instructions-text').html(instructionsText)
+    $('#instructions-text').slideDown()
+    // $('#instructions-text').slideDown()
   }
   if (instructionsDisplayed === true) {
-    $('#instructions-text').html('')
+    // $('#instructions-text').html('')
+    $('#instructions-text').slideUp()
   }
   console.log('prior to the toggle instructionsDisplayed is ', instructionsDisplayed)
   instructionsDisplayed = !instructionsDisplayed
