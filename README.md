@@ -11,7 +11,7 @@
 
 ## Screen Shot of the app
 
-![Screen Shot](/front_end_geo_bee/geo_bee_screen_shot.png "Geo Bee Screen Shot")
+![Screen Shot](/geo_bee_screen_shot.png "Geo Bee Screen Shot")
 
 ## Technologies Used
 
