@@ -31,7 +31,7 @@
 ### General Approach
 
 During project 3, I worked on a bucket list app that divided up bucket list items
-by U.S. state.  For this, we used [JVQMap](https://jqvmap.com) which I thought was
+by U.S. state.  For this, we used [JQVMap](https://jqvmap.com) which I thought was
 really cool and wanted to use again.  So, I decided to make an app that tested
 geography knowledge, starting with US States and State Capitals.
 
