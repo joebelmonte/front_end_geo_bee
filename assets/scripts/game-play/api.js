@@ -5,7 +5,6 @@ const store = require('../store.js')
 // const currentGame = require('../current-game.js')
 
 const postGame = (currentGame) => {
-  console.log('in postGame and currentGame is ', currentGame)
   return $.ajax({
     url: config.apiOrigin + '/games',
     method: 'POST',
@@ -54,7 +53,6 @@ const patchGame = (currentGame) => {
 }
 
 const getAllGames = () => {
-  console.log('in getAllGames and currentGame')
   return $.ajax({
     url: config.apiOrigin + '/games',
     method: 'GET',
@@ -65,7 +63,6 @@ const getAllGames = () => {
 }
 
 const deleteGame = (gameId) => {
-  console.log('in getAllGames and currentGame')
   return $.ajax({
     url: config.apiOrigin + '/games/' + gameId,
     method: 'DELETE',
@@ -76,7 +73,6 @@ const deleteGame = (gameId) => {
 }
 
 const getSingleGame = (gameId) => {
-  console.log('in getSingleGame')
   return $.ajax({
     url: config.apiOrigin + '/games/' + gameId,
     method: 'GET',

@@ -144,16 +144,13 @@ const defineUsStateCapitals = function () {
 }
 
 const nextTurn = function () {
-  console.log('in nextTurn and currentGame is ', currentGame)
   currentGame.currentGuess = Object.keys(currentGame.map)[Math.floor(Math.random() * Object.keys(currentGame.map).length)]
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
-  console.log('currentGame.currentGuess is ', currentGame.currentGuess)
   $('#next-guess-prompt').text(currentGame.map[currentGame.currentGuess])
   $('#incorrect-guesses').text(currentGame.incorrectGuesses)
   $('#remaining-guesses').text(currentGame.guessesRemaining)
   $('#number-completed').text(currentGame.numberCompleted)
   $('#number-remaining').text(currentGame.numberOfItemsRemaining)
-  console.log('end of nextTurn')
 }
 
 const processOfElimColoring = function (code) {
@@ -167,25 +164,20 @@ const processOfElimColoring = function (code) {
 
 const isGuessCorrect = function (code, region) {
   if (currentGame.currentGuess === code) {
-    console.log('correct guess')
     $('#game-play-feedback').text('Correct! Next question:')
     if (currentGame.mapChoice === 'U.S. State Capitals') {
       $('#game-play-feedback').text('Correct! ' + currentGame.map[currentGame.currentGuess] + ' is the capital of ' + region + '. Next question:')
     }
     currentGame.numberCompleted += 1
     currentGame.mapCompleted.push(code)
-    console.log('currentGame.mapCompleted is ', currentGame.mapCompleted)
     $('#number-completed').text(currentGame.numberCompleted)
     currentGame.numberOfItemsRemaining -= 1
     $('#number-remaining').text(currentGame.numberOfItemsRemaining)
-    console.log('in isGuessCorrect prior to deleting and delete currentGame.map[currentGame.currentGuess] is ', currentGame.map[currentGame.currentGuess])
     delete currentGame.map[currentGame.currentGuess]
-    console.log('currentGame.map after deleting is is ', currentGame.map)
     currentGame.currentGuessCorrect = true
     processOfElimColoring(code)
   }
   if (currentGame.currentGuess !== code) {
-    console.log('incorrect guess')
     $('#game-play-feedback').text('Nope, that\'s ' + region + '. Try again...')
     if (currentGame.mapChoice === 'U.S. State Capitals') {
       $('#game-play-feedback').text('Nope, ' + currentGame.map[currentGame.currentGuess] + ' isn\'t the capital of ' + region + '. Try again...')
@@ -199,7 +191,6 @@ const isGuessCorrect = function (code, region) {
 }
 
 const onRetryGame = function () {
-  console.log('in onRetryGame')
   $('#save-abort-buttons').html(saveAbortButtons)
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
@@ -208,7 +199,6 @@ const onRetryGame = function () {
   currentGame.isResumable = null
   currentGame.numberCompleted = 0
   currentGame.incorrectGuesses = 0
-  console.log('in onRetryGame and currentGame.difficultyLevel is ', currentGame.difficultyLevel)
   if (currentGame.difficultyLevel === 'hard') {
     currentGame.guessesRemaining = 3
   }
@@ -218,17 +208,14 @@ const onRetryGame = function () {
   if (currentGame.difficultyLevel === 'easy') {
     currentGame.guessesRemaining = Infinity
   }
-  console.log('in onRetryGame and currentGame.guessesRemaining is ', currentGame.guessesRemaining)
   $('#game-state-container').html(gamePlay)
   if (currentGame.mapChoice === 'U.S. States') {
-    console.log('in map choice if statement')
     defineUsStates()
     currentGame.map = usStates
     $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
     usMap()
   }
   if (currentGame.mapChoice === 'U.S. State Capitals') {
-    console.log('in map choice if statement')
     defineUsStateCapitals()
     currentGame.map = usStateCapitals
     $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
@@ -281,44 +268,27 @@ const checkGameOver = function () {
 
 const onGuess = function (element, code, region) {
   event.preventDefault()
-  console.log('in Guess')
-  console.log('element is ', element)
-  console.log('code is ', code)
-  console.log('region is ', region)
   isGuessCorrect(code, region)
   if (checkGameOver() === 'Won' && currentGame.isResumed === false) {
-    console.log('you won and currentGame.result is ', currentGame.result)
     api.postGame(currentGame)
   }
   if (checkGameOver() === 'Lost' && currentGame.isResumed === false) {
-    console.log('you lost and currentGame.result is ', currentGame.result)
-    console.log('prior to sending to the API the currentGame object is ', currentGame)
     api.postGame(currentGame)
   }
   if (checkGameOver() === 'Won' && currentGame.isResumed === true) {
-    console.log('you won a resumed game and currentGame.result is ', currentGame.result)
     api.patchGame(currentGame)
   }
   if (checkGameOver() === 'Lost' && currentGame.isResumed === true) {
-    console.log('you lost a resumed game and currentGame.result is ', currentGame.result)
-    console.log('prior to sending to the API the currentGame object is ', currentGame)
     api.patchGame(currentGame)
   }
   if (checkGameOver() === false && currentGame.currentGuessCorrect === true) {
-    console.log('Correct - time for another turn')
     nextTurn()
   }
   if (checkGameOver() === false && currentGame.currentGuessCorrect === false) {
-    console.log('try again!')
-    console.log('checkGameOver is ', checkGameOver())
-    console.log('currentGame.currentGuess ', currentGame.currentGuess)
-    console.log('code is ', code)
   }
-  console.log('end of onGuess')
 }
 
 const usMap = function () {
-  console.log('in the usMap function')
   $('#vmap').vectorMap({
     map: 'usa_en',
     backgroundColor: 'rgba(0,0,0,0)',
@@ -338,17 +308,12 @@ const usMap = function () {
     //   $('#map-tooltip').text(region)
     // },
     onRegionClick: function (element, code, region) {
-      console.log('in usMap click event')
-      console.log('element in map is ', element)
-      console.log('code is ', code)
-      console.log('region is ', region)
       onGuess(element, code, region)
     }
   })
 }
 
 const onSaveGame = function () {
-  console.log('in onSaveGame')
   api.postGame(currentGame)
   .then(ui.saveGameSuccess)
   .then(() => {
@@ -360,9 +325,7 @@ const onSaveGame = function () {
 }
 
 const onAbortGame = function () {
-  console.log('in onAbortGame and currentGame is initially ', currentGame)
   currentGame = {}
-  console.log('currentGame should be empty: ', currentGame)
   // $('#game-state-container').html(gameOptions)
   $('#save-abort-buttons').html('')
   showGameOptionsPage()
@@ -371,8 +334,6 @@ const onAbortGame = function () {
 
 const onStartNewGame = function (event) {
   event.preventDefault()
-  console.log('at start of startNewGame and currentGame.map is', currentGame.map)
-  console.log('at start of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
   $('#save-abort-buttons').html(saveAbortButtons)
   $('#save-game').on('click', onSaveGame)
   $('#abort-game').on('click', onAbortGame)
@@ -396,46 +357,33 @@ const onStartNewGame = function (event) {
   }
   currentGame.processOfElmination = $('#process-of-elimination').val()
   currentGame.mapChoice = $('#map-choice :selected').text()
-  console.log('The Map Choice is ', currentGame.mapChoice)
   $('#game-state-container').html(gamePlay)
   if (currentGame.mapChoice === 'U.S. States') {
-    console.log('in map choice if statement')
     defineUsStates()
-    console.log('usStates is ', usStates)
     currentGame.map = usStates
     $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
     usMap()
   }
   if (currentGame.mapChoice === 'U.S. State Capitals') {
-    console.log('in map choice if statement')
     defineUsStateCapitals()
     currentGame.map = usStateCapitals
     $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
     usMap()
   }
-  console.log('mapChoice is ', currentGame.map)
-  console.log('difficulty level is ', currentGame.difficultyLevel)
-  console.log('processOfElmination is ', currentGame.processOfElmination)
-  console.log('Remaining guesses is ', currentGame.guessesRemaining)
   $('#game-map').text(currentGame.mapChoice)
   $('#game-difficulty').text(currentGame.difficultyLevel)
   if (currentGame.processOfElmination === 'on') {
     $('#process-of-elimination-indicator').text(' with process of elimination on')
   }
   currentGame.numberOfItemsRemaining = Object.keys(currentGame.map).length
-  console.log('at end of startNewGame and currentGame.numberOfItemsRemaining is', currentGame.numberOfItemsRemaining)
-  console.log('at end of startNewGame and currentGame.map is', currentGame.map)
   $('#game-play-feedback').text('Next question:')
   nextTurn()
 }
 
 const deleteGame = function (event) {
-  console.log('in deleteGame')
   const gameId = $(event.target).attr('data-id')
-  console.log('game id is', gameId)
   api.deleteGame(gameId)
   .then(() => {
-    console.log('game deleted')
     getAllGames()
   })
 }
@@ -457,27 +405,18 @@ const onDiscardProgress = function () {
 
 const resumeGame = function (event) {
   currentGame = {}
-  console.log('currentGame should be refreshed ', currentGame)
-  console.log('in resumeGame')
   const gameId = $(event.target).attr('data-id')
-  console.log('game id is', gameId)
   currentGame.gameId = gameId
   currentGame.isResumed = true
   api.getSingleGame(gameId)
   .then((data) => {
-    console.log('game got and game is', data)
     $('#save-abort-buttons').html(saveDiscardProgressButtons)
     $('#save-progress').on('click', onSaveProgress)
     $('#discard-progress').on('click', onDiscardProgress)
     currentGame.result = 'In Progress'
-    console.log('currentGame.result is', currentGame.result)
     currentGame.isResumable = null
-    console.log('currentGame.isResumable is', currentGame.isResumable)
     currentGame.numberCompleted = data.game.guesses_correct
-    console.log('currentGame.numberCompleted is', currentGame.numberCompleted)
-    console.log('data.game.guesses_correct is', data.game.guesses_correct)
     currentGame.incorrectGuesses = data.game.guesses_incorrect
-    console.log('data.game.guesses_incorrect is', data.game.guesses_incorrect)
     currentGame.difficultyLevel = data.game.difficulty
     if (currentGame.difficultyLevel === 'hard') {
       currentGame.guessesRemaining = 3 - currentGame.incorrectGuesses
@@ -489,17 +428,14 @@ const resumeGame = function (event) {
       currentGame.guessesRemaining = Infinity
     }
     currentGame.mapChoice = data.game.geography
-    console.log('data.game.geography is', data.game.geography)
     $('#game-state-container').html(gamePlay)
     if (currentGame.mapChoice === 'U.S. States') {
-      console.log('in map choice if statement')
       defineUsStates()
       currentGame.map = filterObj(usStates, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('Where is <span id="next-guess-prompt"></span>?')
       usMap()
     }
     if (currentGame.mapChoice === 'U.S. State Capitals') {
-      console.log('in map choice if statement')
       defineUsStateCapitals()
       currentGame.map = filterObj(usStateCapitals, data.game.map_remaining)
       $('#next-guess-prompt-outer').html('<span id="next-guess-prompt"></span> is the capital of what state?')
@@ -508,9 +444,7 @@ const resumeGame = function (event) {
     $('#game-map').text(currentGame.mapChoice)
     $('#game-difficulty').text(currentGame.difficultyLevel)
     currentGame.processOfElmination = data.game.process_of_elimination
-    console.log('currentGame.processOfElmination is ', currentGame.processOfElmination)
     currentGame.mapCompleted = data.game.map_completed
-    console.log('currentGame.mapCompleted is ', currentGame.mapCompleted)
     if (currentGame.processOfElmination === 'on') {
       for (let i = 0; i < currentGame.mapCompleted.length; i++) {
         processOfElimColoring(currentGame.mapCompleted[i])
@@ -522,17 +456,14 @@ const resumeGame = function (event) {
 }
 
 const backToGameOptions = function () {
-  console.log('in backToGameOptions')
   $('#save-abort-buttons').html('')
   showGameOptionsPage()
   addGameHandlers()
 }
 
 const getAllGames = function () {
-  console.log('in getAllGames')
   api.getAllGames()
   .then((data) => {
-    console.log('return data is: ', data)
     for (let i = 0; i < data.games.length; i++) {
       if (data.games[i].game_complete === null) {
         data.games[i].renderResumeButton = 'yes'
@@ -544,8 +475,6 @@ const getAllGames = function () {
         data.games[i].percentComplete = 100
       }
     }
-    console.log('lets see what the data is now ', data)
-    console.log('data.games is', data.games)
     const fullStatsHTML = allGamesTable({ games: data.games })
     $('#game-state-container').html(fullStatsHTML)
     $('.delete-game').on('click', deleteGame)
@@ -561,10 +490,7 @@ const addGameHandlers = () => {
 }
 
 const onInstructionsButton = function () {
-  console.log('clicking the instructions button')
-  console.log('instructionsDisplayed is ', instructionsDisplayed)
   if (instructionsDisplayed === false) {
-    console.log('in instructionsDisplayed false statement')
     $('#instructions-text').hide()
     $('#instructions-text').html(instructionsText)
     $('#instructions-text').slideDown()
@@ -574,9 +500,7 @@ const onInstructionsButton = function () {
     // $('#instructions-text').html('')
     $('#instructions-text').slideUp()
   }
-  console.log('prior to the toggle instructionsDisplayed is ', instructionsDisplayed)
   instructionsDisplayed = !instructionsDisplayed
-  console.log('after the toggle instructionsDisplayed is ', instructionsDisplayed)
 }
 
 const showGameOptionsPage = function () {
@@ -586,10 +510,8 @@ const showGameOptionsPage = function () {
   instructionsDisplayed = false
   api.getAllGames()
   .then((data) => {
-    console.log('return data is: ', data)
     const gamesStarted = data.games.length
     $('#games-started').text(gamesStarted)
-    console.log('data.games is ', data.games)
     const gamesComplete = data.games.filter(function (game) {
       if (game.game_complete === true) {
         return true
