@@ -31,7 +31,7 @@
 ### General Approach
 
 During project 3, I worked on a bucket list app that divided up bucket list items
-by U.S. state.  For this, we used JVQMap(https://jqvmap.com) which I thought was
+by U.S. state.  For this, we used [JVQMap](https://jqvmap.com) which I thought was
 really cool and wanted to use again.  So, I decided to make an app that tested
 geography knowledge, starting with US States and State Capitals.
 
@@ -50,7 +50,7 @@ answers before a game is "lost."  I also really like how process of elimination 
 turned out.  Finally, I spent a good deal of time making sure that a user can
 save a game and return to it later, with all game state data intact.
 
-### Wireframes and User Stories
+### User Stories
 
 Premise: Build an online game that will test a user’s knowledge of U.S. geography.  The user will be prompted with an unlabeled map and a state name (or state capital) and will then have to click that state on the map.  The game will track the number of correct vs. incorrect guesses and score the game accordingly.  The user can specify difficulty level (meaning the number of incorrect guesses allowed before the game is “lost”).
 
@@ -79,6 +79,8 @@ A user will have many games.  Each game will have the following attributes:
 * Items correctly guessed
 * Items remaining to be guessed
 
+### Wireframes
+
 -   [Wireframes](https://github.com/joebelmonte/front_end_geo_bee/blob/working/Geography%20Bee%20Wireframes.pdf)
 
 ### Major Hurdles/Unsolved Problems
@@ -87,7 +89,7 @@ I didn't have any major problems on the front end portion of the app.  It was mo
 series of steady but slow progress working through small to medium glitches/bugs.  I
 tried to really apply the lessons I learned on my first 3 projects in terms of
 structuring code, making it modular, keeping it organized, and focusing on naming
-conventions, and I think that really helped.  
+conventions, and I think that really helped.
 
 I don't believe my current app has any bugs or is missing any features that are
 necessary for meeting requirements.  However, there are a few features I would
