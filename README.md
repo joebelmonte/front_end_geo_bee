@@ -40,8 +40,8 @@ front end and the Rails API template for the back end.  I have used both of thos
 successfully in the past and felt comfortable using them.  I was also confident
 they would be able to fullfill my needs on the project.
 
-As usual, I spend a few hours at the beginning organizing my thoughts on what this
-game would be and how a user would interact with it.  I want to make the interface
+As usual, I spent a few hours at the beginning organizing my thoughts on what this
+game would be and how a user would interact with it.  I wanted to make the interface
 user-friendly and very simple so that the user could focus on playing the game.
 
 I included several options that I thought were interesting, like the ability to play
@@ -68,9 +68,9 @@ As a user, I want to be able to:
 
 A user will have many games.  Each game will have the following attributes:
 
-* Total Guesses
+* Total guesses
 * Correct guesses
-* Incorrect Guesses
+* Incorrect guesses
 * Difficultly Level
 * Complete/Incomplete (Boolean)
 * Result: won/lost (Boolean)
@@ -86,7 +86,7 @@ A user will have many games.  Each game will have the following attributes:
 ### Major Hurdles/Unsolved Problems
 
 I didn't have any major problems on the front end portion of the app.  It was mostly a
-series of steady but slow progress working through small to medium glitches/bugs.  I
+case of steady but slow progress working through small to medium glitches/bugs.  I
 tried to really apply the lessons I learned on my first 3 projects in terms of
 structuring code, making it modular, keeping it organized, and focusing on naming
 conventions, and I think that really helped.
@@ -99,6 +99,6 @@ have liked to add if I had more time.  For example:
 * Allow the user to sort/filter games in the All Games table view.
 * I really wanted to add a few features that involved a timer.
   * For example, it would be fun to have "hard" mode add a 2 minute time limit or something like that.
-  * Or, the time could count up and you could try to set personal best records for faster time with 0 mistakes.
+  * Or, the time could count up and you could try to set personal best records for fastest time with 0 mistakes.
 * I would have liked to add some additional maps, like European countries, or African countries, etc.
-* I would have added badges for certain accomplishments, like completing a certain number or maps.
+* I would have liked to add badges for certain accomplishments, like completing a certain number or maps.
